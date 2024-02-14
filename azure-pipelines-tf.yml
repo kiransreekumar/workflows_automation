@@ -40,8 +40,8 @@ stages:
     - script: |
             terraform -chdir=terraform/modules/workflows/ init
             terraform -chdir=terraform/modules/workflows/  validate
-            terraform -chdir=terraform/modules/workflows/  plan -var 'warehouse_id=$(warehouse_id)' 
-            terraform -chdir=terraform/modules/workflows/  apply -var 'warehouse_id=$(warehouse_id)' -auto-approve
+            terraform -chdir=terraform/modules/workflows/  plan 
+            terraform -chdir=terraform/modules/workflows/  apply -auto-approve
       workingDirectory: "$(Build.SourcesDirectory)"
 
       
