@@ -5,7 +5,7 @@ resource "azuredevops_git_repository" "dabpipeline" {
   initialization {
     init_type   = "Import"
     source_type = "Git"
-    source_url  = "https://github.com/kiranskmr/dbt_wf"
+    source_url  = "https://github.com/kiranskmr/workflows_automation/"
   }
 
 }
