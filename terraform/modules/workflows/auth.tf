@@ -11,6 +11,10 @@ terraform {
       source = "databricks/databricks"
     }
   }
+
+  backend "azurerm" {
+
+  }
 }
 
 
