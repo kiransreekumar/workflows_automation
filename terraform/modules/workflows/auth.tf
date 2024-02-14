@@ -14,7 +14,6 @@ terraform {
 }
 
 
-}
 
 
 # Use Databricks CLI authentication.
