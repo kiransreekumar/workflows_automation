@@ -1,0 +1,57 @@
+variables:
+  - group: 'Devops Automation'
+
+
+pr:
+  branches:
+    include:
+    - main
+
+stages:
+- stage: 'Git_and_Dependencies'
+  condition: |
+    and(
+      ne(variables['Build.SourceBranch'], 'refs/heads/releases'),
+      not(startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
+    )
+  jobs:
+  - job: 'onPushJob'
+    pool:
+      vmImage: 'ubuntu-20.04'
+
+    steps:
+    - script: env | sort
+      displayName: 'Environment / Context'
+    - checkout: self
+      persistCredentials: "true"
+      clean: "true"
+      displayName: 'Checkout & Build.Reason: $(Build.Reason) & Build.SourceBranchName: $(Build.SourceBranchName)'
+
+
+- stage: 'Py_tests'
+  displayName: 'Running test cases'
+  jobs:
+  - job: 'test_case'
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '3.10.x'
+        architecture: 'x64'
+
+    - script: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install -e .
+      displayName: 'Install dependencies'
+
+    - bash: 'pytest --junitxml=$(Build.StagingDirectory)/test.xml' 
+      workingDirectory: 'src'
+      displayName: 'Run test'
+      
+
+    - task: PublishTestResults@2
+      displayName: 'Publish test result /test.xml'
+      inputs:
+        testResultsFiles: '$(Build.StagingDirectory)/test.xml'
+        testRunTitle: pytests
+

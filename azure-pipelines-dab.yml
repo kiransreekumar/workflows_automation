@@ -1,0 +1,40 @@
+variables:
+  - group: 'Devops Automation'
+
+
+pr:
+  branches:
+    include:
+    - main
+
+stages:
+- stage: 'Git_and_Dependencies'
+  condition: |
+    and(
+      ne(variables['Build.SourceBranch'], 'refs/heads/releases'),
+      not(startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
+    )
+  jobs:
+  - job: 'onPushJob'
+    pool:
+      vmImage: 'ubuntu-20.04'
+
+    steps:
+    - script: env | sort
+      displayName: 'Environment / Context'
+    - checkout: self
+      persistCredentials: "true"
+      clean: "true"
+      displayName: 'Checkout & Build.Reason: $(Build.Reason) & Build.SourceBranchName: $(Build.SourceBranchName)'
+
+
+- stage: 'Databricks_Asset_Bundles_Deployment'
+  displayName: 'Deploying Bundles'
+  jobs:
+  - job: 'bundle_deploy'
+    steps:
+
+    - script: |
+            curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
+            databricks bundle deploy --var="warehouse_id=$(BUNDLE_VAR_warehouse_id)"
+      displayName: 'Deploying Bundles'
