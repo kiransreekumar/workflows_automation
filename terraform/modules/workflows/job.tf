@@ -39,10 +39,7 @@ variable "volume_filename" {
   type        = string
   default     = "Volume"
 }
-variable "warehouse_id" {
-  description = "warehouse ID"
-  type        = string
-}
+
 variable "security_job" {
   description = "path for security job"
   type        = string
