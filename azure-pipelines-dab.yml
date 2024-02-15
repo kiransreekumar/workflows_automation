@@ -1,9 +1,6 @@
 variables:
   - group: 'Devops Automation'
-trigger:
-  branches:
-    include:
-    - main
+
 
 pr:
   branches:
@@ -39,5 +36,5 @@ stages:
 
     - script: |
             curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
-            databricks bundle deploy
+            databricks bundle deploy --var="warehouse_id=$(BUNDLE_VAR_warehouse_id)" --var ="node_type=$(BUNDLE_VAR_node_type)"
       displayName: 'Deploying Bundles'
