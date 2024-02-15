@@ -1,6 +1,9 @@
 variables:
   - group: 'Devops Automation'
-
+trigger:
+  branches:
+    include:
+    - main
 
 pr:
   branches:
