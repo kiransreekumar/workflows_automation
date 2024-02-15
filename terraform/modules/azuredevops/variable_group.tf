@@ -7,7 +7,7 @@ resource "azuredevops_variable_group" "variable_group" {
 
    variable {
      name  = "ARM_ACCESS_KEY"
-     value = ""
+     value = azurerm_storage_account.storage_account.primary_access_key
   }
 
   variable {
