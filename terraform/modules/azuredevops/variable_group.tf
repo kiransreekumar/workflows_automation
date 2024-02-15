@@ -35,6 +35,11 @@ resource "azuredevops_variable_group" "variable_group" {
     value = ""
   }
   variable {
+    name = "BUNDLE_VAR_node_type_id"
+    value = ""
+  }
+  
+  variable {
     name = "container_name"
     value = azurerm_storage_data_lake_gen2_filesystem.container.name
   }

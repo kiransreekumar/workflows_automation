@@ -36,5 +36,5 @@ stages:
 
     - script: |
             curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
-            databricks bundle deploy --var="warehouse_id=$(BUNDLE_VAR_warehouse_id)"
+            databricks bundle deploy --var="warehouse_id=$(BUNDLE_VAR_warehouse_id)" --var ="warehouse_id=$(BUNDLE_VAR_node_type_id)"
       displayName: 'Deploying Bundles'
