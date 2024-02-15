@@ -35,7 +35,7 @@ resource "azuredevops_variable_group" "variable_group" {
     value = ""
   }
   variable {
-    name = "BUNDLE_VAR_node_type_id"
+    name = "BUNDLE_VAR_node_type"
     value = ""
   }
   
