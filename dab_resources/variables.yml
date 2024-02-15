@@ -51,4 +51,4 @@ variables:
     default: databricks_notebooks/Security
   git_url:
     description: Git URl
-    default: https://github.com/kiranskmr/dbt_wf
+    default: https://github.com/kiranskmr/workflows_automation

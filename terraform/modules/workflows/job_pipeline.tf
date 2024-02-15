@@ -11,15 +11,15 @@ variable "dlt_catalog_tf" {
 
 resource "databricks_notebook" "dlt_pipeline_notebook_base" {
   source = "${path.module}/../../../databricks_notebooks/DLT-base_tables.sql"
-  path   = "${data.databricks_current_user.me.home}/dbt_wf/databricks_notebooks/DLT-base_tables"
+  path   = "${data.databricks_current_user.me.home}/workflows_automation/databricks_notebooks/DLT-base_tables"
 }
 resource "databricks_notebook" "dlt_pipeline_notebook_ods" {
   source = "${path.module}/../../../databricks_notebooks/DLT-ODS_tables.sql"
-  path   = "${data.databricks_current_user.me.home}/dbt_wf/databricks_notebooks/DLT-ODS_tables"
+  path   = "${data.databricks_current_user.me.home}/workflows_automation/databricks_notebooks/DLT-ODS_tables"
 }
 resource "databricks_notebook" "dlt_pipeline_notebook_wh" {
   source = "${path.module}/../../../databricks_notebooks/DLT-WH_tables.sql"
-  path   = "${data.databricks_current_user.me.home}/dbt_wf/databricks_notebooks/DLT-WH_tables"
+  path   = "${data.databricks_current_user.me.home}/workflows_automation/databricks_notebooks/DLT-WH_tables"
 }
 
 resource "databricks_pipeline" "this" {

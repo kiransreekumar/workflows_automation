@@ -155,7 +155,7 @@ resource "databricks_job" "this" {
  }
 
  git_source {
-   url      = "https://github.com/kiranskmr/dbt_wf.git"
+   url      = "https://github.com/kiranskmr/workflows_automation.git"
    provider = "gitHub"
    branch   = "main"
  }
