@@ -2,10 +2,11 @@ variables:
   - group: 'Devops Automation'
 
 
-pr:
+trigger:
   branches:
     include:
     - main
+
 
 stages:
 - stage: 'Git_and_Dependencies'

@@ -55,30 +55,11 @@ This will create  an azure devops pipeline , a variable group and storage accoun
 ![Devops Pipeline](images/pipeline.png)
 
  
- 
-Outputs from Terraform.
-
-
-```
-Container_Name = "statestore"
-Resource_Group_Name = "<username>arg"
-Storage_Account_Name = "<username>asa"
-storage_account_primary_access_key = "<your key>"
-```
-
 
 Update the variable group with the required properties.
+databricks_host 
+databricks_token
+BUNDLE_VAR_node_type i3.xlarge for AWS / Standard_DS3_v2 for Azure/ n1-standard-4 for gcp
 
 ![Variable Group](images/vargroup.png)
 
-Fork the repo and update the properties in terraform/modules/workflows/auth.tf from the output of the terrfaform apply command and merge to main branch.
-
-
-
-
-```
-resource_group_name  = "<your resource group name>"
-storage_account_name = "<your storage account name>"
-container_name       = "<your container name>"
-
-```
