@@ -14,7 +14,7 @@ on:
     types:
       - closed
     branches:
-      - release
+      - main
 
 jobs:
   # Used by the "pipeline_update" job to deploy the bundle.
@@ -40,7 +40,9 @@ jobs:
         env:
           DATABRICKS_TOKEN: ${{ secrets.SP_TOKEN }}
           DATABRICKS_BUNDLE_ENV: qa
-          DATABRICKS_HOST: https://e2-demo-west.cloud.databricks.com/
+          DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
+          BUNDLE_VAR_warehouse_id: ${{ vars.BUNDLE_VAR_warehouse_id }}
+          BUNDLE_VAR_node_type: ${{ vars.BUNDLE_VAR_node_type }}
 
   # Validate, deploy, and then run the bundle.
   pipeline_update:
@@ -66,10 +68,10 @@ jobs:
         env:
           DATABRICKS_TOKEN: ${{ secrets.SP_TOKEN }}
           DATABRICKS_BUNDLE_ENV: qa
-          DATABRICKS_HOST: https://e2-demo-west.cloud.databricks.com/
+          DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
       - run: databricks bundle run security_job --refresh-all
         working-directory: .
         env:
           DATABRICKS_TOKEN: ${{ secrets.SP_TOKEN }}
           DATABRICKS_BUNDLE_ENV: qa
-          DATABRICKS_HOST: https://e2-demo-west.cloud.databricks.com/
+          DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
