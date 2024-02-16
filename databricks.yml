@@ -47,7 +47,6 @@ targets:
     mode: development
     variables:
       dbt_catalog: sales_dbt
-      job_cluster_id : 1221-171240-vfvlrqd1
     resources:
       jobs:
         dbt_dss_job:
@@ -67,11 +66,6 @@ targets:
       dbt_catalog: sales_dbt
     workspace:
       root_path: /Shared/.bundle/prod/${bundle.name}
-    run_as:
-      # This runs as kiran.sreekumar@databricks.com in production. Alternatively,
-      # a service principal could be used here using service_principal_name
-      # (see Databricks documentation).
-      user_name: kiran.sreekumar@databricks.com
     resources:
       jobs:
         dbt_dss_job:
