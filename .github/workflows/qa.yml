@@ -23,7 +23,7 @@ jobs:
   deploy:
     name: "Deploy bundle"
     runs-on: ubuntu-latest
-
+    environment: qa
     steps:
       # Check out this repo, so that this workflow can access it.
       - uses: actions/checkout@v3
