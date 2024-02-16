@@ -17,7 +17,7 @@ resource "azuredevops_variable_group" "variable_group" {
 
   variable {
     name = "DATABRICKS_CLUSTER_ID"
-    value = ""
+    value = databricks_cluster.cluster.id
   }
 
    variable {
@@ -32,7 +32,7 @@ resource "azuredevops_variable_group" "variable_group" {
 
   variable {
     name = "BUNDLE_VAR_warehouse_id"
-    value = ""
+    value = databricks_sql_endpoint.dabwarehouse.id
   }
   variable {
     name = "BUNDLE_VAR_node_type"
