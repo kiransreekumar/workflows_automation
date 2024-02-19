@@ -9,11 +9,11 @@ node {
   }
   stage('Validate Bundle') {
     sh """#!/bin/bash
-          ${DBCLIPATH}/databricks bundle validate -t ${BUNDLETARGET}
+          databricks bundle validate -t ${BUNDLETARGET}
        """
   }
   stage('Deploy Bundle') {
     sh """#!/bin/bash
-          ${DBCLIPATH}/databricks bundle deploy -t ${BUNDLETARGET}
+         databricks bundle deploy -t ${BUNDLETARGET}
        """
   }
