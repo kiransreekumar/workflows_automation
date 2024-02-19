@@ -9,12 +9,12 @@ node {
   }
   stage('Validate Bundle') {
     sh """#!/bin/bash
-          databricks bundle validate -t ${BUNDLETARGET}
+          /opt/homebrew/bin/databricks bundle validate -t ${BUNDLETARGET}
        """
   }
   stage('Deploy Bundle') {
     sh """#!/bin/bash
-         databricks bundle deploy -t ${BUNDLETARGET}
+         /opt/homebrew/bin/databricks bundle deploy -t ${BUNDLETARGET}
        """
   }
 }
