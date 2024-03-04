@@ -8,4 +8,4 @@ phases:
     commands:
       - echo "Running tests..."
       - curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh
-      - databricks bundle deploy"
+      - databricks bundle deploy
