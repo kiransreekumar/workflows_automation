@@ -4,7 +4,6 @@ phases:
     commands:
       - echo "Installing dependencies..."
       - pip install -r requirements.txt -t lib
-      - npm install
   build:
     commands:
       - echo "Running tests..."
