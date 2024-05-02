@@ -14,7 +14,7 @@ resources:
             notebook_path: ${var.wheeljob}
             source: GIT
           libraries:
-            - whl: "/Workspace${workspace.root_path}/files/dist/workflows_automation-0.0.1-py3-none-any.whl"
+            - whl: "/Workspace${workspace.root_path}/files/dist/dab_whl-0.0.1-py3-none-any.whl"
 
       git_source:
             git_url: ${var.git_url}

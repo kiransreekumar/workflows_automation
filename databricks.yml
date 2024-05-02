@@ -1,7 +1,7 @@
 # This is a Databricks asset bundle definition for my_dabs.
 # See https://docs.databricks.com/dev-tools/bundles/index.html for documentation.
 bundle:
-  name: dbt-workflows-dab
+  name: workflow_automation
 
 include:
   - dab_resources/*.yml
