@@ -29,9 +29,19 @@ stages:
       persistCredentials: "true"
       clean: "true"
       displayName: 'Checkout & Build.Reason: $(Build.Reason) & Build.SourceBranchName: $(Build.SourceBranchName)'
-    - script: databricks fs cp =$(Build.SourcesDirectory)/$(Build.Repository.Name)/dist/dab_whl-0.0.1-py3-none-any.whl dbfs:/Volumes/sales_dbt/sales_kiran_sreekumar/wheel --overwrite
-      displayName: 'Copy to volumes'
 
+
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(Build.ArtifactStagingDirectory)'
+        artifactName: Databricks
+        artifactType: 'pipeline'
+    
+    # or use the 'publish' alias
+    - publish: '$(Build.ArtifactStagingDirectory)'
+      artifact: Databricks
+    - script: databricks fs cp =$(Pipeline.Workspace)/databricks/* dbfs:/Volumes/sales_dbt/sales_kiran_sreekumar/wheel --overwrite
+      displayName: 'Copy to volumes'
 
 - stage: 'Databricks_Asset_Bundles_Deployment'
   displayName: 'Deploying Bundles'
