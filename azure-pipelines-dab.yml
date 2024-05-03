@@ -41,17 +41,10 @@ stages:
       displayName: 'Deploying Bundles'
 
 
-
-    - task: Hey24sheep.envar.EnvironmentVariables.EnvironmentVariables@0
-      displayName: 'Set BUNDLE_ROOT environment variable'
-      inputs:
-        envKvp: 'BUNDLE_ROOT=$(Agent.ReleaseDirectory)/$(Release.PrimaryArtifactSourceAlias)/Databricks'
-
-
     - bash: |
-        databricks fs cp =$(BUNDLE_ROOT)/dist/dab_whl-0.0.1-py3-none-any.whl dbfs:/Volumes/sales_dbt/sales_kiran_sreekumar/wheel --overwrite
+        databricks fs cp =$(Agent.ReleaseDirectory)/$(Release.PrimaryArtifactSourceAlias)/dist/dab_whl-0.0.1-py3-none-any.whl dbfs:/Volumes/sales_dbt/sales_kiran_sreekumar/wheel --overwrite
    
-    displayName: 'Copy to volumes'
+      displayName: 'Copy to volumes'
 
 
 
