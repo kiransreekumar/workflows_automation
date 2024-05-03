@@ -29,6 +29,11 @@ stages:
       displayName: 'Checkout & Build.Reason: $(Build.Reason) & Build.SourceBranchName: $(Build.SourceBranchName)'
 
 
+    - task: ExtractFiles@1
+      displayName: 'Extract build pipeline artifact'
+      inputs:
+      destinationFolder: '$(Build.Repository.LocalPath)/Databricks'
+
 - stage: 'Databricks_Asset_Bundles_Deployment'
   displayName: 'Deploying Bundles'
   jobs:
@@ -42,7 +47,7 @@ stages:
 
 
     - bash: |
-        databricks fs cp =$(Build.Repository.LocalPath)/dist/dab_whl-0.0.1-py3-none-any.whl dbfs:/Volumes/sales_dbt/sales_kiran_sreekumar/wheel --overwrite
+        databricks fs cp =$(Build.Repository.LocalPath)/Databricks/dist/dab_whl-0.0.1-py3-none-any.whl dbfs:/Volumes/sales_dbt/sales_kiran_sreekumar/wheel --overwrite
    
       displayName: 'Copy to volumes'
 
