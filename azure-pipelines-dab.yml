@@ -60,7 +60,7 @@ steps:
 - script: databricks fs cp $(Build.Repository.LocalPath)/dist/*.* dbfs:/Volumes/sales_dbt/sales_kiran_sreekumar/wheel --overwrite
   displayName: 'Copy to volumes'
 
-- stage: 'Databricks_Asset_Bundles_Deployment'
+- script: 'Databricks_Asset_Bundles_Deployment'
   displayName: 'Deploying Bundles'
   jobs:
   - job: 'bundle_deploy'
