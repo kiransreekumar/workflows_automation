@@ -20,7 +20,7 @@
 
 # COMMAND ----------
 
-# MAGIC %pip install --upgrade "mlflow-skinny[databricks]"
+# MAGIC %pip install --upgrade "mlflow-skinny[databricks]" "hyperopt"
 # MAGIC dbutils.library.restartPython()
 
 # COMMAND ----------
