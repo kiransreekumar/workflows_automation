@@ -1,11 +1,11 @@
 # Databricks notebook source
 
-# COMMAND ----------
+# COMMAND -----------
 
 # Restart Python after installing the Python wheel.
 dbutils.library.restartPython()
 
-# COMMAND ----------
+# COMMAND -----------
 
 from data.addcol import with_status
 
