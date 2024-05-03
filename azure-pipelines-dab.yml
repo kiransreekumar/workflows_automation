@@ -40,7 +40,7 @@ stages:
     # or use the 'publish' alias
     - publish: '$(Build.ArtifactStagingDirectory)'
       artifact: Databricks
-    - script: databricks fs cp =$(Pipeline.Workspace)/Databricks/* dbfs:/Volumes/sales_dbt/sales_kiran_sreekumar/wheel --overwrite
+    - script: databricks fs cp $(Pipeline.Workspace)/Databricks/* dbfs:/Volumes/sales_dbt/sales_kiran_sreekumar/wheel --overwrite
       displayName: 'Copy to volumes'
 
 - stage: 'Databricks_Asset_Bundles_Deployment'
