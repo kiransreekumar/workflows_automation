@@ -26,11 +26,10 @@ stages:
     - script: env | sort
       displayName: 'Environment / Context'
     - checkout: self
-      path: Databricks
       persistCredentials: "true"
       clean: "true"
       displayName: 'Checkout & Build.Reason: $(Build.Reason) & Build.SourceBranchName: $(Build.SourceBranchName)'
-    - script: databricks fs cp =$(Build.SourcesDirectory)/$(Build.Repository.Name)/Databricks/dist/dab_whl-0.0.1-py3-none-any.whl dbfs:/Volumes/sales_dbt/sales_kiran_sreekumar/wheel --overwrite
+    - script: databricks fs cp =$(Build.SourcesDirectory)/$(Build.Repository.Name)/dist/dab_whl-0.0.1-py3-none-any.whl dbfs:/Volumes/sales_dbt/sales_kiran_sreekumar/wheel --overwrite
       displayName: 'Copy to volumes'
 
 
