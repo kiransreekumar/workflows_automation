@@ -1,9 +1,12 @@
+
+
 resources:
   jobs:
     run-dabdemo-notebook:
       name: ${var.job_prefix}-run-dabdemo-notebook
       tasks:
         - task_key: ${var.job_prefix}-run-dabdemo-notebook-task
+          job_cluster_key: job_cluster
           notebook_task:
             notebook_path: ${var.wheeljob}
             source: GIT
