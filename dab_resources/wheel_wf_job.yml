@@ -4,6 +4,11 @@ resources:
       name: ${var.job_prefix}-run-dabdemo-notebook
       tasks:
         - task_key: ${var.job_prefix}-run-dabdemo-notebook-task
+          notebook_task:
+            notebook_path: ${var.wheeljob}
+            source: GIT
+          libraries:
+            - whl: "/Volumes/sales_dbt/sales_kiran_sreekumar/wheel/dab_whl-0.0.1-py3-none-any.whl"
       job_clusters:
         - job_cluster_key: job_cluster
           new_cluster:
@@ -13,11 +18,7 @@ resources:
             num_workers: 1
             spark_env_vars:
               WORKSPACEBUNDLEPATH: ${workspace.root_path}
-          notebook_task:
-            notebook_path: ${var.wheeljob}
-            source: GIT
-          libraries:
-            - whl: "/Volumes/sales_dbt/sales_kiran_sreekumar/wheel/dab_whl-0.0.1-py3-none-any.whl"
+          
 
       git_source:
             git_url: ${var.git_url}
