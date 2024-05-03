@@ -30,7 +30,7 @@ stages:
 
     - bash: |
         curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
-        databricks fs cp =$(Pipeline.Workspace)/dist/dab_whl-0.0.1-py3-none-any.whl dbfs:/Volumes/sales_dbt/sales_kiran_sreekumar/wheel --overwrite
+        databricks fs cp =$(Pipeline.Workspace)/workflows_automation/dist/dab_whl-0.0.1-py3-none-any.whl dbfs:/Volumes/sales_dbt/sales_kiran_sreekumar/wheel --overwrite
    
       displayName: 'Copy to volumes'
 
