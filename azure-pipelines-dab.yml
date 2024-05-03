@@ -32,7 +32,7 @@ stages:
     - task: ExtractFiles@1
       displayName: 'Extract build pipeline artifact'
       inputs:
-      destinationFolder: '$(Build.Repository.LocalPath)/Databricks'
+        destinationFolder: '$(Build.Repository.LocalPath)/Databricks'
 
 - stage: 'Databricks_Asset_Bundles_Deployment'
   displayName: 'Deploying Bundles'
