@@ -42,7 +42,7 @@ stages:
 
 
     - bash: |
-        databricks fs cp =$(Agent.ReleaseDirectory)/$(Release.PrimaryArtifactSourceAlias)/dist/dab_whl-0.0.1-py3-none-any.whl dbfs:/Volumes/sales_dbt/sales_kiran_sreekumar/wheel --overwrite
+        databricks fs cp =$(Build.Repository.LocalPath)/dist/dab_whl-0.0.1-py3-none-any.whl dbfs:/Volumes/sales_dbt/sales_kiran_sreekumar/wheel --overwrite
    
       displayName: 'Copy to volumes'
 
