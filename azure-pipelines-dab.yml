@@ -24,13 +24,14 @@ stages:
     - script: env | sort
       displayName: 'Environment / Context'
     - checkout: self
+      path: Databricks
       persistCredentials: "true"
       clean: "true"
       displayName: 'Checkout & Build.Reason: $(Build.Reason) & Build.SourceBranchName: $(Build.SourceBranchName)'
 
     - bash: |
         curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
-        databricks fs cp =$(Pipeline.Workspace)/workflows_automation/dist/dab_whl-0.0.1-py3-none-any.whl dbfs:/Volumes/sales_dbt/sales_kiran_sreekumar/wheel --overwrite
+        databricks fs cp =../Databricks/dist/dab_whl-0.0.1-py3-none-any.whl dbfs:/Volumes/sales_dbt/sales_kiran_sreekumar/wheel --overwrite
    
       displayName: 'Copy to volumes'
 
