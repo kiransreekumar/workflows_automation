@@ -35,6 +35,10 @@ resource "azurerm_key_vault" "vault" {
     key_permissions    = var.key_permissions
     secret_permissions = var.secret_permissions
   }
+  tags = {
+    removeAfter = "2024-12-31",
+    owner = data.azuread_user.current_user.user_principal_name
+  }
 }
 
 resource "random_string" "azurerm_key_vault_key_name" {

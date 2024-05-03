@@ -10,6 +10,10 @@ data "azuread_user" "current_user" {
 resource "azurerm_resource_group" "resource_group" {
   name     = replace("${lower(data.azuread_user.current_user.mail_nickname)}arg",".","")
   location = "uksouth"
+   tags = {
+    removeAfter = "2024-12-31",
+    owner = data.azuread_user.current_user.user_principal_name
+  }
 }
 
 resource "azurerm_storage_account" "storage_account" {
@@ -21,6 +25,7 @@ resource "azurerm_storage_account" "storage_account" {
   is_hns_enabled           = true
 
   tags = {
+    removeAfter = "2024-12-31",
     owner = data.azuread_user.current_user.user_principal_name
   }
 }
@@ -28,6 +33,8 @@ resource "azurerm_storage_account" "storage_account" {
 resource "azurerm_storage_data_lake_gen2_filesystem" "container" {
   name               = "statestore"
   storage_account_id = azurerm_storage_account.storage_account.id
+
+  
 }
 
 
