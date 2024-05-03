@@ -211,7 +211,7 @@ resource "databricks_job" "this" {
         ]
     project_directory = ""
     
-    warehouse_id=  databricks_sql_endpoint.warehouse.id
+    warehouse_id =  databricks_sql_endpoint.dabwarehouse.id
     catalog = var.dbt_catalog
     schema = var.dbt_schema
     
