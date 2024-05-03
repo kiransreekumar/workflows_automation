@@ -4,6 +4,8 @@ resources:
       name: ${var.job_prefix}-run-dabdemo-notebook
       tasks:
         - task_key: ${var.job_prefix}-run-dabdemo-notebook-task
+      job_clusters:
+        - job_cluster_key: job_cluster
           new_cluster:
             spark_version: ${var.spark_version}
             data_security_mode: SINGLE_USER
