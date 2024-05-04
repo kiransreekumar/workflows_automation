@@ -4,19 +4,6 @@ resources:
   jobs:
     run-dabdemo-notebook:
       name: ${var.job_prefix}-Run-dabdemo-notebook
-      tags:
-        created_by: ${workspace.current_user.userName}
-      format: MULTI_TASK
-      job_cluster_key: job_cluster_wheel
-      tasks:
-        - task_key: Run-dabdemo-notebook-task
-          notebook_task:
-            notebook_path: ${var.wheeljob}
-            source: GIT
-          libraries:
-            - whl: "/Volumes/sales_dbt/sales_kiran_sreekumar/wheel/dab_whl-0.0.1-py3-none-any.whl"
-
-
       job_clusters:
         - job_cluster_key: job_cluster_wheel
           new_cluster:
@@ -28,7 +15,19 @@ resources:
             spark_env_vars:
               PYSPARK_PYTHON: /databricks/python3/bin/python3
               WORKSPACEBUNDLEPATH: ${workspace.root_path}
-            data_security_mode: USER_ISOLATION              
+            data_security_mode: USER_ISOLATION
+      tags:
+        created_by: ${workspace.current_user.userName}
+      format: MULTI_TASK
+      tasks:
+        - task_key: Run-dabdemo-notebook-task
+          job_cluster_key: job_cluster_wheel
+          notebook_task:
+            notebook_path: ${var.wheeljob}
+            source: GIT
+          libraries:
+            - whl: "/Volumes/sales_dbt/sales_kiran_sreekumar/wheel/dab_whl-0.0.1-py3-none-any.whl"
+              
           
 
       git_source:
