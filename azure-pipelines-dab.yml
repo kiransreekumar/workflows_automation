@@ -17,10 +17,10 @@ pool:
   vmImage: ubuntu-22.04
 
 stages:
-- stage: 'Git and Bundles'
+- stage: 'Git_and_Bundles'
 
   jobs:
-  - job: 'Deploy Bundles'
+  - job: 'Deploy_Bundles'
     pool:
       vmImage: 'ubuntu-20.04'
 
