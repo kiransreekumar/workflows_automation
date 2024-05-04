@@ -65,18 +65,16 @@ stages:
 
 - stage: 'Deploy Bundles'
 
-  jobs:
-  - job: 'Bundles'
 
-  - script: |
-      curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
-      displayName: 'Install Databricks CLI'
+- script: |
+    curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
+    displayName: 'Install Databricks CLI'
     
-  - script: databricks bundle deploy --var="warehouse_id=$(BUNDLE_VAR_warehouse_id),node_type=$(BUNDLE_VAR_node_type)"
-    displayName: 'Deploying Bundles'
+- script: databricks bundle deploy --var="warehouse_id=$(BUNDLE_VAR_warehouse_id),node_type=$(BUNDLE_VAR_node_type)"
+  displayName: 'Deploying Bundles'
    
-  - script: databricks fs cp $(Build.Repository.LocalPath)/dist/*.* dbfs:/Volumes/sales_dbt/sales_kiran_sreekumar/wheel --overwrite
-    displayName: 'Copy to volumes'
+- script: databricks fs cp $(Build.Repository.LocalPath)/dist/*.* dbfs:/Volumes/sales_dbt/sales_kiran_sreekumar/wheel --overwrite
+  displayName: 'Copy to volumes'
     
 
 
