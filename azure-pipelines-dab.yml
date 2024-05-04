@@ -16,6 +16,10 @@ trigger:
 pool:
   vmImage: ubuntu-22.04
 
+
+stages:
+- stage: 'Git_and_Dependencies'
+
 # Download the files from the designated branch in the remote Git repository
 # onto the build agent.
 steps:
@@ -53,6 +57,7 @@ steps:
   inputs:
     ArtifactName: 'DatabricksBuild'
 
+- stage: 'Deploy Bundles'
 - script: |
     curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
   displayName: 'Install Databricks CLI'
