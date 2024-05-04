@@ -66,6 +66,9 @@ stages:
     - script: |
         curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
       displayName: 'Install Databricks CLI'
+
+    - script: databricks bundle destroy --var="warehouse_id=$(BUNDLE_VAR_warehouse_id),node_type=$(BUNDLE_VAR_node_type)"
+      displayName: 'Destroying Bundles'
     
     - script: databricks bundle deploy --var="warehouse_id=$(BUNDLE_VAR_warehouse_id),node_type=$(BUNDLE_VAR_node_type)"
       displayName: 'Deploying Bundles'
