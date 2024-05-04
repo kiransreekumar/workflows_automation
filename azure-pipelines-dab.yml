@@ -17,10 +17,10 @@ pool:
   vmImage: ubuntu-22.04
 
 stages:
-- stage: 'Git_and_Dependencies'
+- stage: 'Git_and_Bundles'
 
   jobs:
-  - job: 'onPushJob'
+  - job: 'Deploy Bundles'
     pool:
       vmImage: 'ubuntu-20.04'
 
@@ -62,12 +62,6 @@ stages:
     - task: PublishBuildArtifacts@1
       inputs:
         ArtifactName: 'DatabricksBuild'
-
-- stage: 'Deploy Bundles'
-
-  jobs:
-  - job: 'Bundles'
-    pool:
 
     - script: |
         curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
