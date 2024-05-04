@@ -17,7 +17,7 @@ pool:
   vmImage: ubuntu-22.04
 
 stages:
-- stage: 'Git_and_Bundles'
+- stage: 'Git and Bundles'
 
   jobs:
   - job: 'Deploy Bundles'
