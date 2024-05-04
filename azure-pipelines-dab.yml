@@ -42,7 +42,7 @@ stages:
 # Then add the files to be used by the release pipeline.
 # The implementation in your pipeline will likely be different.
 # The objective here is to add all files intended for the current release.
-    - script: |
+  - script: |
       git diff --name-only --diff-filter=AMR HEAD^1 HEAD | xargs -I '{}' cp --parents -r '{}' $(Build.BinariesDirectory)
       mkdir -p $(Build.BinariesDirectory)/src/dabwhl
       cp $(Build.Repository.LocalPath)/dist/*.* $(Build.BinariesDirectory)/dist
