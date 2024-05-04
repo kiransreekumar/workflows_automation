@@ -7,9 +7,9 @@ resources:
       tags:
         created_by: ${workspace.current_user.userName}
       format: MULTI_TASK
+      job_cluster_key: job_cluster_wheel
       tasks:
         - task_key: Run-dabdemo-notebook-task
-          job_cluster_key: job_cluster_wheel
           notebook_task:
             notebook_path: ${var.wheeljob}
             source: GIT
