@@ -16,16 +16,22 @@ trigger:
 pool:
   vmImage: ubuntu-22.04
 
-
 stages:
 - stage: 'Git_and_Dependencies'
 
+  jobs:
+  - job: 'onPushJob'
+    pool:
+      vmImage: 'ubuntu-20.04'
+
+
 # Download the files from the designated branch in the remote Git repository
 # onto the build agent.
-steps:
-- checkout: self
-  persistCredentials: true
-  clean: true
+
+    steps:
+    - checkout: self
+      persistCredentials: true
+      clean: true
 
 # Generate the deployment artifact. To do this, the build agent gathers
 # all the new or updated code to be given to the release pipeline,
@@ -36,37 +42,41 @@ steps:
 # Then add the files to be used by the release pipeline.
 # The implementation in your pipeline will likely be different.
 # The objective here is to add all files intended for the current release.
-- script: |
-    git diff --name-only --diff-filter=AMR HEAD^1 HEAD | xargs -I '{}' cp --parents -r '{}' $(Build.BinariesDirectory)
-    mkdir -p $(Build.BinariesDirectory)/src/dabwhl
-    cp $(Build.Repository.LocalPath)/dist/*.* $(Build.BinariesDirectory)/dist
-    cp $(Build.Repository.LocalPath)/*.* $(Build.BinariesDirectory)
-  displayName: 'Get Changes'
+    - script: |
+      git diff --name-only --diff-filter=AMR HEAD^1 HEAD | xargs -I '{}' cp --parents -r '{}' $(Build.BinariesDirectory)
+      mkdir -p $(Build.BinariesDirectory)/src/dabwhl
+      cp $(Build.Repository.LocalPath)/dist/*.* $(Build.BinariesDirectory)/dist
+      cp $(Build.Repository.LocalPath)/*.* $(Build.BinariesDirectory)
+    displayName: 'Get Changes'
 
 # Create the deployment artifact and then publish it to the
 # artifact repository.
-- task: ArchiveFiles@2
-  inputs:
-    rootFolderOrFile: '$(Build.BinariesDirectory)'
-    includeRootFolder: false
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-    replaceExistingArchive: true
+  - task: ArchiveFiles@2
+    inputs:
+      rootFolderOrFile: '$(Build.BinariesDirectory)'
+      includeRootFolder: false
+      archiveType: 'zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      replaceExistingArchive: true
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    ArtifactName: 'DatabricksBuild'
+  - task: PublishBuildArtifacts@1
+    inputs:
+      ArtifactName: 'DatabricksBuild'
 
 - stage: 'Deploy Bundles'
-- script: |
-    curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
-  displayName: 'Install Databricks CLI'
+
+  jobs:
+  - job: 'Bundles'
+
+  - script: |
+      curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
+      displayName: 'Install Databricks CLI'
     
-- script: databricks bundle deploy --var="warehouse_id=$(BUNDLE_VAR_warehouse_id),node_type=$(BUNDLE_VAR_node_type)"
-  displayName: 'Deploying Bundles'
+  - script: databricks bundle deploy --var="warehouse_id=$(BUNDLE_VAR_warehouse_id),node_type=$(BUNDLE_VAR_node_type)"
+    displayName: 'Deploying Bundles'
    
-- script: databricks fs cp $(Build.Repository.LocalPath)/dist/*.* dbfs:/Volumes/sales_dbt/sales_kiran_sreekumar/wheel --overwrite
-  displayName: 'Copy to volumes'
+  - script: databricks fs cp $(Build.Repository.LocalPath)/dist/*.* dbfs:/Volumes/sales_dbt/sales_kiran_sreekumar/wheel --overwrite
+    displayName: 'Copy to volumes'
     
 
 
