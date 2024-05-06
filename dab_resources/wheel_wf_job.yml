@@ -1,5 +1,5 @@
 run_as:
-  service_principal_name: ${var.job_prefix}-Run-dabdemo-notebook
+  user_name: ${var.job_prefix}-Run-dabdemo-notebook
 
 resources:
   jobs:
