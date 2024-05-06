@@ -16,7 +16,7 @@ resources:
             notebook_path: ${var.wheeljob}
             source: GIT
           libraries:
-            - whl: "/Volumes/sales_dbt/sales_kiran_sreekumar/wheel/dab_whl-0.0.1-py3-none-any.whl"
+            - whl: "/Volumes/main/default/wheel/dab_whl-0.0.1-py3-none-any.whl"
               
       job_clusters:
         - job_cluster_key: job_cluster_wheel
