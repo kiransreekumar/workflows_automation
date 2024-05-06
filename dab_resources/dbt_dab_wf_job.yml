@@ -1,5 +1,5 @@
 run_as:
-  user_name: ${var.job_prefix}-Run-dabdemo-notebook
+  user_name: ${workspace.current_user.userName}
 
 resources:
   jobs:
