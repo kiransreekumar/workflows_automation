@@ -10,7 +10,7 @@ resources:
       format: MULTI_TASK
       tasks:
         - task_key: Run-dabdemo-notebook-task
-          job_cluster_key: job_cluster_wheel
+          job_cluster_key: job_cluster_wheel1
           notebook_task:
             notebook_path: ${var.wheeljob}
             source: GIT
