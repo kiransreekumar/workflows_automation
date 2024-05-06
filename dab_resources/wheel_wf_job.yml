@@ -4,7 +4,7 @@ resources:
   jobs:
     run-dabdemo-notebook:
       name: ${var.job_prefix}-Run-dabdemo-notebook
-
+      run_as: ${workspace.current_user.userName}
       tags:
         created_by: ${workspace.current_user.userName}
       format: MULTI_TASK

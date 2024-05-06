@@ -2,7 +2,7 @@ resources:
   pipelines:
     dlt_sales_pipeline:
       name: "DAB -  Customer Order Details - DLT"
-
+      run_as: ${workspace.current_user.userName}
       libraries:
         - notebook:
             path: ../databricks_notebooks/DLT-base_tables.sql

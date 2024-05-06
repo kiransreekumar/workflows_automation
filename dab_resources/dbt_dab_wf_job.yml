@@ -2,6 +2,7 @@ resources:
   jobs:
     dbt_dss_job:
       name: DAB-Customer Order Details
+      run_as: ${workspace.current_user.userName}
       tags:
         created_by: ${workspace.current_user.userName}
       format: MULTI_TASK
