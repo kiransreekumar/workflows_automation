@@ -15,7 +15,7 @@ stages:
       not(startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
     )
   jobs:
-  - job: 'onPushJob'
+  - job: 'Git build'
     pool:
       vmImage: 'ubuntu-20.04'
 
@@ -34,15 +34,21 @@ stages:
 - stage: 'Terraform_Deploy'
   displayName: 'Terraform Config Validation'
   jobs:
-  - job: 'Terraform_Validate'
+  - job: 'Terraform_Steps'
     workspace:
       clean: all
     steps:
-    - script: |
-            terraform -chdir=terraform/modules/workflows/ init -backend-config="resource_group_name=$(resource_group_name)" -backend-config="storage_account_name=$(storage_account_name)" -backend-config="container_name=$(container_name)" -backend-config="key=prod.terraform.tfstate"
-            terraform -chdir=terraform/modules/workflows/  validate
-            terraform -chdir=terraform/modules/workflows/  plan 
-            terraform -chdir=terraform/modules/workflows/  apply -auto-approve
+    - script: terraform -chdir=terraform/modules/workflows/ init -backend-config="resource_group_name=$(resource_group_name)" -backend-config="storage_account_name=$(storage_account_name)" -backend-config="container_name=$(container_name)" -backend-config="key=prod.terraform.tfstate"
+      displayName: 'Terraform Init'
+      workingDirectory: "$(Build.SourcesDirectory)"
+    - script: terraform -chdir=terraform/modules/workflows/  validate
+      displayName: 'Terraform Validate'
+      workingDirectory: "$(Build.SourcesDirectory)"
+    - script: terraform -chdir=terraform/modules/workflows/  plan 
+      displayName: 'Terraform Plan'
+      workingDirectory: "$(Build.SourcesDirectory)"
+    - script: terraform -chdir=terraform/modules/workflows/  apply -auto-approve
+      displayName: 'Terraform Apply'
       workingDirectory: "$(Build.SourcesDirectory)"
 
       
