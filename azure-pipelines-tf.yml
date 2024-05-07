@@ -32,7 +32,6 @@ stages:
 
 
 - stage: 'Terraform_Deploy'
-  displayName: 'Terraform Config Validation'
   jobs:
   - job: 'Terraform Steps'
     workspace:
