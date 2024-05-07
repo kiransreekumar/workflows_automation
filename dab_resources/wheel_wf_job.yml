@@ -4,13 +4,13 @@ run_as:
 resources:
   jobs:
     run-dabdemo-notebook:
-      name: ${var.job_prefix}-Run-dabdemo-notebook
+      name: DAB-Wheel-File-Dependency
       
       tags:
         created_by: ${workspace.current_user.userName}
       format: MULTI_TASK
       tasks:
-        - task_key: Run-dabdemo-notebook-task
+        - task_key: Run-Wheel-File-Dependency
           job_cluster_key: job_cluster_wheel
           notebook_task:
             notebook_path: ${var.wheeljob}
