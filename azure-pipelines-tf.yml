@@ -15,7 +15,7 @@ stages:
       not(startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
     )
   jobs:
-  - job: 'Git build'
+  - job: 'Git_build'
     pool:
       vmImage: 'ubuntu-20.04'
 
@@ -33,7 +33,7 @@ stages:
 
 - stage: 'Terraform_Deploy'
   jobs:
-  - job: 'Terraform Steps'
+  - job: 'Terraform_Steps'
     workspace:
       clean: all
     steps:
