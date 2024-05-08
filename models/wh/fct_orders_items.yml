@@ -20,14 +20,6 @@ models:
             tests:
                 - not_null
 
-          - name: customer_key
-            description: reference to `dim_customer`
-            tests:
-                - not_null
-                - relationships:
-                    to: ref('dim_customer')
-                    field: customer_key
-
           - name: order_status_code
             description: order status
             tests:
