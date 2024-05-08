@@ -13,7 +13,7 @@ resource "azuredevops_git_repository" "dabpipeline" {
 
 resource "azuredevops_build_definition" "dabpipelinebuild" {
   project_id = azuredevops_project.project.id
-  name       = "DAB Build Pipeline"
+  name       = "DAB and WAT Build Pipeline"
 
   ci_trigger {
     use_yaml = true

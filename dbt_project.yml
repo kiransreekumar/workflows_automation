@@ -31,5 +31,3 @@ models:
     relation: true
     columns: true
 
-
-on-run-end: "{{ dbt_artifacts.upload_results(results) }}"
