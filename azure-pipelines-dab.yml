@@ -37,7 +37,7 @@ stages:
       inputs:
         versionSpec: '3.11' # string. Required. Version spec. Default: 3.x.
         architecture: 'x64' # 'x86' | 'x64'. Required. Architecture. Default: x64.
-        
+
 # Download the files from the designated branch in the remote Git repository
 # onto the build agent.
 
@@ -86,7 +86,7 @@ stages:
     - script: databricks api post /api/2.0/sql/statements --json @$(Build.Repository.LocalPath)/volume.json
       displayName: 'Create Volume'
    
-    - script: databricks fs cp $(Build.Repository.LocalPath)/dist/*.* dbfs:/Volumes/main/default/wheel --overwrite
+    - script: databricks fs cp $(Build.Repository.LocalPath)/dist/*.whl dbfs:/Volumes/main/default/wheel --overwrite
       displayName: 'Copy to volumes'
     
 
