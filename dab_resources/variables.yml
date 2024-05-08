@@ -11,9 +11,6 @@ variables:
   volume_job:
     description: volume script
     default: databricks_notebooks/Volume
-  ml_job:
-    description: ml script
-    default: databricks_notebooks/machine-learning-with-unity-catalog
   dbt_catalog:
     description: Catalog to use
     default: sales_dbt

@@ -138,21 +138,6 @@ resource "databricks_job" "this" {
    job_cluster_key = "pii_cluster"
  }
 
- job_cluster {
-   new_cluster {
-     spark_version = var.spark_version
-     node_type_id = data.databricks_node_type.smallest.id
-     custom_tags ={ ResourceClass = "MultiNode" }
-     spark_env_vars = {
-       PYSPARK_PYTHON = "/databricks/python3/bin/python3"
-     }
-     num_workers        = 8
-     data_security_mode = "SINGLE_USER"
-   
-   
-  }
-   job_cluster_key = "tf_ml_cluster"
- }
 
  git_source {
    url      = "https://github.com/kiranskmr/workflows_automation.git"
@@ -253,23 +238,6 @@ library {
   }
 }
 
-
-    task {
-   task_key = "Machine-Learning-in-Unitycatalog" 
-   job_cluster_key = "tf_ml_cluster"
-   depends_on {
-     task_key = "VOLUME-Ingest-Data"
-   }
-  notebook_task {
-    notebook_path = "${var.notebook_subdirectory}/${var.ml_filename}"
-    source = "GIT"
-    base_parameters = {
-      volume_catalog = var.volume_catalog
-      volume_schema = var.volume_schema
-    }
-    
-  }
-}
 
 
 

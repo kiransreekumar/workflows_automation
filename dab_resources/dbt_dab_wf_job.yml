@@ -73,17 +73,6 @@ resources:
             notebook_path: ${var.volume_job}
             source: GIT
 
-        - task_key: Machine-Learning-in-Unitycatalog
-          depends_on:
-          - task_key: VOLUME-Ingest-Data
-          job_cluster_key: dab_ml_cluster
-          notebook_task:
-            base_parameters:
-              volume_catalog: ${var.volume_catalog}
-              volume_schema: ${var.volume_schema}_${workspace.current_user.short_name}
-            notebook_path: ${var.ml_job}
-            source: GIT
-
            
       job_clusters:
         - job_cluster_key: pii_cluster
@@ -108,16 +97,6 @@ resources:
             data_security_mode: USER_ISOLATION
             num_workers: 8
 
-        - job_cluster_key: dab_ml_cluster
-          new_cluster:
-            spark_version: ${var.spark_version_ml}
-            node_type_id: ${var.node_type}
-            custom_tags:
-              ResourceClass: MultiNode
-            spark_env_vars:
-              PYSPARK_PYTHON: /databricks/python3/bin/python3
-            data_security_mode: SINGLE_USER
-            num_workers: 8
 
       git_source:
             git_url: ${var.git_url}
