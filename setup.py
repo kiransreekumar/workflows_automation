@@ -14,7 +14,7 @@ import datetime
 import data
 
 setup(
-    name="dab_whl",
+    name="data",
     # We use timestamp as Local version identifier (https://peps.python.org/pep-0440/#local-version-identifiers.)
     # to ensure that changes to wheel package are picked up when used on all-purpose clusters
     version=data.__version__ ,

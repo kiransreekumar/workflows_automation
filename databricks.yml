@@ -19,9 +19,14 @@ experimental:
       @exit /b
       '
 artifacts:
-  dab-wheel:
+  # setuptools-wheel:
+  #   type: whl
+  #   path: ./    
+
+  poetry-wheel:
     type: whl
-    path: ./          
+    build: poetry build
+    path: ./      
   
 targets:
   # The 'dev' target, used for development purposes.
