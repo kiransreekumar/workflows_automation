@@ -33,7 +33,7 @@ task {
 }
 
  library {
-     whl = "/Volumes/main/default/wheel/dab_whl-0.0.1-py3-none-any.whl"
+     whl = "/Volumes/main/default/wheel/data-0.0.1-py3-none-any.whl"
       
 }
       
