@@ -1,1 +1,1 @@
-{"warehouse_id": "d1184b8c2a8a87eb","catalog": "main","schema": "default","statement": "CREATE VOLUME IF NOT EXISTS wheel"}
+{"warehouse_id": "$(BUNDLE_VAR_warehouse_id)","catalog": "main","schema": "default","statement": "CREATE VOLUME IF NOT EXISTS wheel"}
