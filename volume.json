@@ -1,1 +1,1 @@
-{"warehouse_id": "$(BUNDLE_VAR_warehouse_id)","catalog": "main","schema": "default","statement": "CREATE VOLUME IF NOT EXISTS wheel"}
+{"warehouse_id": $(BUNDLE_VAR_warehouse_id),"catalog": "main","schema": "default","statement": "CREATE VOLUME IF NOT EXISTS wheel"}
