@@ -8,13 +8,25 @@ on:
     paths: ['terraform/workflows/**']
 
 jobs:
-  validate:
-    name: Validate
+  plan:
+    name: Plan
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2.5.0
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+      - name: terraform init
+        env:
+          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+          RESOURCE_GROUP: ${{ secrets.RESOURCE_GROUP }}
+          STORAGE_ACCOUNT: ${{ secrets.STORAGE_ACCOUNT }}
+          CONTAINER_NAME: ${{ secrets.CONTAINER_NAME }}
+        run: terraform init -backend-config="storage_account_name=$STORAGE_ACCOUNT" -backend-config="container_name=$CONTAINER_NAME" -backend-config="resource_group_name=$RESOURCE_GROUP"
       - name: terraform fmt
         run: terraform fmt
         with:
@@ -23,52 +35,34 @@ jobs:
         run: terraform run
         with:
           path: terraform/workflows
-
-  plan:
-    name: Plan
-    if: github.event_name == 'pull_request'
-    environment: labs-azure-spn
-    runs-on: labs-azure
-    env:
-      ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
-      ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
-      ARM_SUBSCRIPTION_ID: ${{ vars.ARM_SUBSCRIPTION_ID }}
-      ARM_USE_OIDC: true
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v2.5.0
-      - uses: azure/login@v1
-        with:
-          client-id: ${{ vars.ARM_CLIENT_ID }}
-          tenant-id: ${{ vars.ARM_TENANT_ID }}
-          subscription-id: ${{ vars.ARM_SUBSCRIPTION_ID }}
-      - run: curl ifconfig.me/ip
       - name: terraform plan
+        env:
+          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
         run: terraform plan
-        with:
-          path: terraform/workflows
+
 
   apply:
     name: Apply
     if: github.event_name != 'pull_request'
-    environment: labs-azure-spn
-    runs-on: labs-azure
-    env:
-      ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
-      ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
-      ARM_SUBSCRIPTION_ID: ${{ vars.ARM_SUBSCRIPTION_ID }}
-      ARM_USE_OIDC: true
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2.5.0
-      - uses: azure/login@v1
-        with:
-          client-id: ${{ vars.ARM_CLIENT_ID }}
-          tenant-id: ${{ vars.ARM_TENANT_ID }}
-          subscription-id: ${{ vars.ARM_SUBSCRIPTION_ID }}
-      - run: curl ifconfig.me/ip
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+      - name: terraform init
+        env:
+          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+          RESOURCE_GROUP: ${{ secrets.RESOURCE_GROUP }}
+          STORAGE_ACCOUNT: ${{ secrets.STORAGE_ACCOUNT }}
+          CONTAINER_NAME: ${{ secrets.CONTAINER_NAME }}
+        run: terraform init -backend-config="storage_account_name=$STORAGE_ACCOUNT" -backend-config="container_name=$CONTAINER_NAME" -backend-config="resource_group_name=$RESOURCE_GROUP"
       - name: terraform apply
         run: terraform apply apply -auto-approve
         with:
