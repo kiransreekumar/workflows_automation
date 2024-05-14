@@ -1,0 +1,75 @@
+name: Deploy tf-workflow
+on:
+  push:
+    branches: ['main']
+    paths: ['terraform/workflows/**']
+  pull_request:
+    branches: ['main']
+    paths: ['terraform/workflows/**']
+
+jobs:
+  validate:
+    name: Validate
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2.5.0
+      - name: terraform fmt
+        run: terraform fmt
+        with:
+          path: terraform/workflows
+      - name: terraform validate
+        run: terraform run
+        with:
+          path: terraform/workflows
+
+  plan:
+    name: Plan
+    if: github.event_name == 'pull_request'
+    environment: labs-azure-spn
+    runs-on: labs-azure
+    env:
+      ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
+      ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ vars.ARM_SUBSCRIPTION_ID }}
+      ARM_USE_OIDC: true
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2.5.0
+      - uses: azure/login@v1
+        with:
+          client-id: ${{ vars.ARM_CLIENT_ID }}
+          tenant-id: ${{ vars.ARM_TENANT_ID }}
+          subscription-id: ${{ vars.ARM_SUBSCRIPTION_ID }}
+      - run: curl ifconfig.me/ip
+      - name: terraform plan
+        run: terraform plan
+        with:
+          path: terraform/workflows
+
+  apply:
+    name: Apply
+    if: github.event_name != 'pull_request'
+    environment: labs-azure-spn
+    runs-on: labs-azure
+    env:
+      ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
+      ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ vars.ARM_SUBSCRIPTION_ID }}
+      ARM_USE_OIDC: true
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2.5.0
+      - uses: azure/login@v1
+        with:
+          client-id: ${{ vars.ARM_CLIENT_ID }}
+          tenant-id: ${{ vars.ARM_TENANT_ID }}
+          subscription-id: ${{ vars.ARM_SUBSCRIPTION_ID }}
+      - run: curl ifconfig.me/ip
+      - name: terraform apply
+        run: terraform apply apply -auto-approve
+        with:
+          path: terraform/workflows
