@@ -29,12 +29,10 @@ jobs:
         run: terraform init -backend-config="storage_account_name=$STORAGE_ACCOUNT" -backend-config="container_name=$CONTAINER_NAME" -backend-config="resource_group_name=$RESOURCE_GROUP" -backend-config="key=terraform.tfstate"
       - name: terraform fmt
         run: terraform fmt
-        with:
-          path: terraform/modules/workflows
+        working-directory: terraform/modules/workflows
       - name: terraform validate
         run: terraform run
-        with:
-          path: terraform/modules/workflows
+        working-directory: terraform/modules/workflows
       - name: terraform plan
         env:
           ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
@@ -65,5 +63,4 @@ jobs:
         run: terraform init -backend-config="storage_account_name=$STORAGE_ACCOUNT" -backend-config="container_name=$CONTAINER_NAME" -backend-config="resource_group_name=$RESOURCE_GROUP" -backend-config="key=terraform.tfstate"
       - name: terraform apply
         run: terraform apply apply -auto-approve
-        with:
-          path: terraform/modules/workflows
+        working-directory: terraform/modules/workflows
