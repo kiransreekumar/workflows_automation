@@ -29,14 +29,14 @@ resource "databricks_pipeline" "this" {
 
 
   cluster {
-    label               = "default"
+    label = "default"
     autoscale {
-      min_workers=1
-      max_workers=8
-      mode= "ENHANCED"
+      min_workers = 1
+      max_workers = 8
+      mode        = "ENHANCED"
 
     }
-    
+
   }
 
   library {
@@ -45,7 +45,7 @@ resource "databricks_pipeline" "this" {
     }
   }
 
-   library {
+  library {
     notebook {
       path = databricks_notebook.dlt_pipeline_notebook_base.id
     }
@@ -58,8 +58,8 @@ resource "databricks_pipeline" "this" {
 
   filters {}
 
-  edition = "ADVANCED"
+  edition     = "ADVANCED"
   development = true
-  continuous = false
-  channel = "CURRENT"
+  continuous  = false
+  channel     = "CURRENT"
 }

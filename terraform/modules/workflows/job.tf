@@ -47,43 +47,43 @@ variable "security_job" {
 }
 variable "cluster_environment_type" {
   description = "Cluster EnvironmentType tag"
-  type = string
-  default ="dev"
+  type        = string
+  default     = "dev"
 }
 
 variable "volume_catalog" {
   description = "Volume catalog"
-  type = string
-  default ="sales_dbt_tf"
+  type        = string
+  default     = "sales_dbt_tf"
 }
 
 variable "volume_schema" {
   description = "Volume Schema"
-  type = string
-  default ="wine"
+  type        = string
+  default     = "wine"
 }
 
 variable "pii_volume_schema" {
   description = "Volume Schema for pii data"
-  type = string
-  default ="pii"
+  type        = string
+  default     = "pii"
 }
 
 
 variable "ml_filename" {
   description = "File name for Ml job"
-  type = string
-  default ="machine-learning-with-unity-catalog"
+  type        = string
+  default     = "machine-learning-with-unity-catalog"
 }
 variable "generate_data" {
   description = "File name for Ml job"
-  type = string
-  default ="PII/00_generate_data"
+  type        = string
+  default     = "PII/00_generate_data"
 }
-variable "spark_version"{
+variable "spark_version" {
   description = "Spark version Ml job"
-  type = string
-  default ="14.2.x-cpu-ml-scala2.12"
+  type        = string
+  default     = "14.2.x-cpu-ml-scala2.12"
 }
 
 # Create the cluster with the "smallest" amount
@@ -99,120 +99,120 @@ data "databricks_spark_version" "latest_lts" {
 }
 
 data "databricks_spark_version" "ml" {
-  ml  = true
+  ml                = true
   long_term_support = true
 }
 
 resource "databricks_job" "this" {
-  name = var.job_name
-  format=  "MULTI_TASK"
+  name   = var.job_name
+  format = "MULTI_TASK"
   job_cluster {
-   new_cluster {
-     spark_version = data.databricks_spark_version.latest_lts.id
-     node_type_id = data.databricks_node_type.smallest.id
-     custom_tags ={ ResourceClass = "MultiNode" }
-     spark_env_vars = {
-       PYSPARK_PYTHON = "/databricks/python3/bin/python3"
-     }
-     num_workers        = 8
-     data_security_mode = "USER_ISOLATION"
-   
-   
-  }
-   job_cluster_key = "tf_shared_cluster"
- }
-
- job_cluster {
-   new_cluster {
-     spark_version = data.databricks_spark_version.latest_lts.id
-     node_type_id = data.databricks_node_type.smallest.id
-     custom_tags ={ ResourceClass = "MultiNode" }
-     spark_env_vars = {
-       PYSPARK_PYTHON = "/databricks/python3/bin/python3"
-     }
-     num_workers        = 8
-     data_security_mode = "SINGLE_USER"
-   
-   
-  }
-   job_cluster_key = "pii_cluster"
- }
+    new_cluster {
+      spark_version = data.databricks_spark_version.latest_lts.id
+      node_type_id  = data.databricks_node_type.smallest.id
+      custom_tags   = { ResourceClass = "MultiNode" }
+      spark_env_vars = {
+        PYSPARK_PYTHON = "/databricks/python3/bin/python3"
+      }
+      num_workers        = 8
+      data_security_mode = "USER_ISOLATION"
 
 
- git_source {
-   url      = "https://github.com/kiranskmr/workflows_automation.git"
-   provider = "gitHub"
-   branch   = "main"
- }
-  task {
-   task_key = "Set-up-UC-Catalog-and-Schema" 
-   job_cluster_key = "tf_shared_cluster"
-  notebook_task {
-    notebook_path = "${var.notebook_subdirectory}/${var.notebook_filename}"
-    source = "GIT"
-    base_parameters = {
-      dbt_catalog = var.dbt_catalog
-      dbt_schema = var.dbt_schema
-      dlt_catalog = var.dlt_catalog
-      dlt_schema = var.dlt_schema
-      volume_schema = var.volume_schema
-      pii_volume_schema =var.pii_volume_schema
     }
-    
+    job_cluster_key = "tf_shared_cluster"
   }
-}
 
- task {
-   task_key = "Assigning-UC-masking-and-filtering-funtions" 
-   job_cluster_key = "tf_shared_cluster"
+  job_cluster {
+    new_cluster {
+      spark_version = data.databricks_spark_version.latest_lts.id
+      node_type_id  = data.databricks_node_type.smallest.id
+      custom_tags   = { ResourceClass = "MultiNode" }
+      spark_env_vars = {
+        PYSPARK_PYTHON = "/databricks/python3/bin/python3"
+      }
+      num_workers        = 8
+      data_security_mode = "SINGLE_USER"
+
+
+    }
+    job_cluster_key = "pii_cluster"
+  }
+
+
+  git_source {
+    url      = "https://github.com/kiranskmr/workflows_automation.git"
+    provider = "gitHub"
+    branch   = "main"
+  }
+  task {
+    task_key        = "Set-up-UC-Catalog-and-Schema"
+    job_cluster_key = "tf_shared_cluster"
+    notebook_task {
+      notebook_path = "${var.notebook_subdirectory}/${var.notebook_filename}"
+      source        = "GIT"
+      base_parameters = {
+        dbt_catalog       = var.dbt_catalog
+        dbt_schema        = var.dbt_schema
+        dlt_catalog       = var.dlt_catalog
+        dlt_schema        = var.dlt_schema
+        volume_schema     = var.volume_schema
+        pii_volume_schema = var.pii_volume_schema
+      }
+
+    }
+  }
+
+  task {
+    task_key        = "Assigning-UC-masking-and-filtering-funtions"
+    job_cluster_key = "tf_shared_cluster"
     depends_on {
-     task_key = "DBT-Ingest-customer-data-and-transformation"
-   }
-  notebook_task {
-    notebook_path = "${var.notebook_subdirectory}/${var.security_job}"
-    source = "GIT"
-    base_parameters = {
-      dbt_catalog = var.dbt_catalog
-      dbt_schema = var.dbt_schema
-      dlt_catalog = var.dlt_catalog
-      dlt_schema = var.dlt_schema
+      task_key = "DBT-Ingest-customer-data-and-transformation"
     }
-    
+    notebook_task {
+      notebook_path = "${var.notebook_subdirectory}/${var.security_job}"
+      source        = "GIT"
+      base_parameters = {
+        dbt_catalog = var.dbt_catalog
+        dbt_schema  = var.dbt_schema
+        dlt_catalog = var.dlt_catalog
+        dlt_schema  = var.dlt_schema
+      }
+
+    }
   }
-}
 
   task {
-    
-   task_key = "DBT-Ingest-customer-data-and-transformation" 
-   job_cluster_key = "tf_shared_cluster"
-   depends_on {
-     task_key = "Set-up-UC-Catalog-and-Schema"
-   }
-   run_if = "ALL_SUCCESS"
-  dbt_task {
-    commands= [
-          "dbt deps",
-          "dbt build"
-        ]
-    project_directory = ""
-    
-    warehouse_id =  databricks_sql_endpoint.tfwarehouse.id
-    catalog = var.dbt_catalog
-    schema = var.dbt_schema
-    
-  }
-library {
-     pypi {
-       package = "dbt-databricks>=1.0.0,<2.0.0"
-     }
-   }
-    
-}
 
- task {
-  depends_on {
-     task_key = "Set-up-UC-Catalog-and-Schema"
-   }
+    task_key        = "DBT-Ingest-customer-data-and-transformation"
+    job_cluster_key = "tf_shared_cluster"
+    depends_on {
+      task_key = "Set-up-UC-Catalog-and-Schema"
+    }
+    run_if = "ALL_SUCCESS"
+    dbt_task {
+      commands = [
+        "dbt deps",
+        "dbt build"
+      ]
+      project_directory = ""
+
+      warehouse_id = databricks_sql_endpoint.tfwarehouse.id
+      catalog      = var.dbt_catalog
+      schema       = var.dbt_schema
+
+    }
+    library {
+      pypi {
+        package = "dbt-databricks>=1.0.0,<2.0.0"
+      }
+    }
+
+  }
+
+  task {
+    depends_on {
+      task_key = "Set-up-UC-Catalog-and-Schema"
+    }
     task_key = "DLT-Ingest-customer-data-and-transformation"
     pipeline_task {
       pipeline_id = databricks_pipeline.this.id
@@ -220,23 +220,23 @@ library {
   }
 
 
-    task {
-   task_key = "VOLUME-Ingest-Data" 
-   job_cluster_key = "pii_cluster"
-   depends_on {
-     task_key = "Set-up-UC-Catalog-and-Schema"
-   }
-  notebook_task {
-    notebook_path = "${var.notebook_subdirectory}/${var.volume_filename}"
-    source = "GIT"
-    base_parameters = {
-      volume_catalog = var.volume_catalog
-      volume_schema = var.volume_schema
-      pii_volume_schema = var.pii_volume_schema
+  task {
+    task_key        = "VOLUME-Ingest-Data"
+    job_cluster_key = "pii_cluster"
+    depends_on {
+      task_key = "Set-up-UC-Catalog-and-Schema"
     }
-    
+    notebook_task {
+      notebook_path = "${var.notebook_subdirectory}/${var.volume_filename}"
+      source        = "GIT"
+      base_parameters = {
+        volume_catalog    = var.volume_catalog
+        volume_schema     = var.volume_schema
+        pii_volume_schema = var.pii_volume_schema
+      }
+
+    }
   }
-}
 
 
 

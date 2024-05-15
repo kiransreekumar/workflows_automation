@@ -13,7 +13,6 @@ terraform {
   }
 
   backend "azurerm" {
-
   }
 }
 
@@ -22,6 +21,7 @@ terraform {
 
 # Use Databricks CLI authentication.
 provider "databricks" {
+  profile = var.databricks_connection_profile
 }
 
 # Retrieve information about the current user.
