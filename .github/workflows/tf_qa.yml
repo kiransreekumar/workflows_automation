@@ -27,6 +27,7 @@ jobs:
           STORAGE_ACCOUNT: ${{ vars.STORAGE_ACCOUNT }}
           CONTAINER_NAME: ${{ vars.CONTAINER_NAME }}
         run: terraform init -backend-config="storage_account_name=$STORAGE_ACCOUNT" -backend-config="container_name=$CONTAINER_NAME" -backend-config="resource_group_name=$RESOURCE_GROUP" -backend-config="key=terraform.tfstate"
+        working-directory: terraform/modules/workflows
       - name: terraform fmt
         run: terraform fmt
         working-directory: terraform/modules/workflows
