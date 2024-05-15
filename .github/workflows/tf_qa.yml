@@ -2,10 +2,10 @@ name: Deploy tf-workflow
 on:
   push:
     branches: ['main']
-    paths: ['terraform/workflows/**']
+    paths: ['terraform/module/workflows/**']
   pull_request:
     branches: ['main']
-    paths: ['terraform/workflows/**']
+    paths: ['terraform/module/workflows/**']
 
 jobs:
   plan:
@@ -34,7 +34,7 @@ jobs:
       - name: terraform validate
         run: terraform run
         with:
-          path: terraform/workflows
+          path: terraform/module/workflows
       - name: terraform plan
         env:
           ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
@@ -66,4 +66,4 @@ jobs:
       - name: terraform apply
         run: terraform apply apply -auto-approve
         with:
-          path: terraform/workflows
+          path: terraform/module/workflows
