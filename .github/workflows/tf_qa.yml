@@ -28,27 +28,3 @@ jobs:
       - name: terraform init
         run: terraform init -backend-config="storage_account_name=$STORAGE_ACCOUNT" -backend-config="container_name=$CONTAINER_NAME" -backend-config="resource_group_name=$RESOURCE_GROUP" -backend-config="key=$KEY"
         working-directory: terraform/modules/workflows
-      - name: terraform fmt
-        run: terraform fmt
-        working-directory: terraform/modules/workflows
-      - name: terraform validate
-        run: terraform validate
-        working-directory: terraform/modules/workflows
-      - name: terraform plan
-        run: terraform plan
-
-
-  apply:
-    name: Apply
-    if: github.event_name != 'pull_request'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v2.5.0
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
-      - name: terraform init
-        run: terraform init -backend-config="storage_account_name=$STORAGE_ACCOUNT" -backend-config="container_name=$CONTAINER_NAME" -backend-config="resource_group_name=$RESOURCE_GROUP" -backend-config="key=terraform.tfstate"
-      - name: terraform apply
-        run: terraform apply apply -auto-approve
-        working-directory: terraform/modules/workflows
