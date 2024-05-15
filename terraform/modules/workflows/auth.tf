@@ -15,7 +15,6 @@ terraform {
   }
 }
 
-
 # Use Databricks CLI authentication.
 provider "databricks" {
   profile = var.databricks_connection_profile
