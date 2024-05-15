@@ -26,7 +26,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
       - name: terraform init
-        run: terraform init -backend-config="storage_account_name=tfstateworkflow" -backend-config="container_name=workflowstate" -backend-config="resource_group_name=HSRG" -backend-config="key=terraform.tfstate"
+        run: terraform init -backend-config="storage_account_name=$STORAGE_ACCOUNT" -backend-config="container_name=$CONTAINER_NAME" -backend-config="resource_group_name=$RESOURCE_GROUP" -backend-config="key=terraform.tfstate"
         working-directory: terraform/modules/workflows
       - name: terraform fmt
         run: terraform fmt
