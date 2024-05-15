@@ -31,7 +31,7 @@ jobs:
         run: terraform fmt
         working-directory: terraform/modules/workflows
       - name: terraform validate
-        run: terraform run
+        run: terraform validate
         working-directory: terraform/modules/workflows
       - name: terraform plan
         env:
