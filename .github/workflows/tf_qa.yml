@@ -43,13 +43,14 @@ jobs:
     name: Apply
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
+    environment: qa
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2.5.0
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
       - name: terraform init
-        run: terraform init -backend-config="storage_account_name=$STORAGE_ACCOUNT" -backend-config="container_name=$CONTAINER_NAME" -backend-config="resource_group_name=$RESOURCE_GROUP" -backend-config="key=terraform.tfstate"
+        run: terraform init -backend-config="storage_account_name=$STORAGE_ACCOUNT" -backend-config="container_name=$CONTAINER_NAME" -backend-config="resource_group_name=$RESOURCE_GROUP" -backend-config="key=tfstate"
       - name: terraform apply
         run: terraform apply apply -auto-approve
         working-directory: terraform/modules/workflows
