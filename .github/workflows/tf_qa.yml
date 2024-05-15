@@ -15,7 +15,7 @@ env:
   STORAGE_ACCOUNT: ${{ vars.STORAGE_ACCOUNT }}
   CONTAINER_NAME: ${{ vars.CONTAINER_NAME }}
   DATABRICKS_HOST: e2-demo-field-eng.cloud.databricks.com
-  DATABRICKS_TOKEN: dapia50641f81a05148e8ff00c70dc102068
+  DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
 
 
 jobs:
