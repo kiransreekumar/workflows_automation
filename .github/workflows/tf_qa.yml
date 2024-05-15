@@ -14,7 +14,7 @@ env:
   RESOURCE_GROUP: ${{ vars.RESOURCE_GROUP }}
   STORAGE_ACCOUNT: ${{ vars.STORAGE_ACCOUNT }}
   CONTAINER_NAME: ${{ vars.CONTAINER_NAME }}
-  DATABRICKS_HOST: e2-demo-field-eng.cloud.databricks.com
+  DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
   DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
 
 
