@@ -5,7 +5,7 @@ variable "job_name" {
   default     = "My Job"
 }
 variable "dbt_catalog" {
-  description = "dbt catalog name"
+  description = "dbt catalog names"
   type        = string
   default     = "sales_dbt_tf"
 }
