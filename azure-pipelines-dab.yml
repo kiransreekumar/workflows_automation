@@ -83,10 +83,8 @@ stages:
     - script: databricks bundle deploy --var="warehouse_id=$(BUNDLE_VAR_warehouse_id),node_type=$(BUNDLE_VAR_node_type)" -t $(BUNDLE_TARGET)
       displayName: 'Deploying Bundles'
 
-    - script: databricks api post /api/2.0/sql/statements --json @$(Build.Repository.LocalPath)/volume.json
-      displayName: 'Create Volume'
    
-    - script: databricks fs cp $(Build.Repository.LocalPath)/dist/*.whl dbfs:/Volumes/main/default/wheel --overwrite
+    - script: databricks fs cp $(Build.Repository.LocalPath)/dist/*.whl dbfs:/Volumes/wheel_catalog/wheel_schema/wheel_volume --overwrite
       displayName: 'Copy to volumes'
     
 
