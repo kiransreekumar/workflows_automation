@@ -37,6 +37,8 @@ stages:
     workspace:
       clean: all
     steps:
+    - script: databricks fs cp $(Build.Repository.LocalPath)/dist/*.whl dbfs:/Volumes/wheel_catalog/wheel_schema/wheel_volume --overwrite
+      displayName: 'Copy to volumes'
     - script: terraform -chdir=terraform/modules/workflows/ init -backend-config="resource_group_name=$(resource_group_name)" -backend-config="storage_account_name=$(storage_account_name)" -backend-config="container_name=$(container_name)" -backend-config="key=prod.terraform.tfstate"
       displayName: 'Terraform Init'
       workingDirectory: "$(Build.SourcesDirectory)"
