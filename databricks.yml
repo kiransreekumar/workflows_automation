@@ -14,7 +14,7 @@ sync:
 experimental:
   scripts:
     preinit:
-      /bin/bash .databricks/generate-resources.sh --where src --include '*'
+      /bin/bash generate-resources.sh --where src --include '*'
 artifacts:
   # setuptools-wheel:
   #   type: whl
