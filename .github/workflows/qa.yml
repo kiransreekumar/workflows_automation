@@ -31,11 +31,6 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.11' # install the python version needed
-          
-      - name: Install dependencies
-        uses: py-actions/py-dependency-install@v4
-        with:
-              path: "requirements.txt"
 
       # Download the Databricks CLI.
       # See https://github.com/databricks/setup-cli
