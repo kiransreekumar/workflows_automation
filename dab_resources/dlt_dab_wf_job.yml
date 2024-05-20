@@ -4,7 +4,7 @@ run_as:
 resources:
   pipelines:
     dlt_sales_pipeline:
-      name: "DAB -  Customer Order Details - DLT"
+      name: ${bundle.environment}DAB -  Customer Order Details - DLT
       libraries:
         - notebook:
             path: ../databricks_notebooks/DLT-base_tables.sql
