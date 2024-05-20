@@ -13,11 +13,8 @@ sync:
 
 experimental:
   scripts:
-    preinit: |
-      : '
-      @echo Windows is not supported for this preview.
-      @exit /b
-      '
+    preinit:
+      /bin/bash .databricks/generate-resources.sh --where src --include '*'
 artifacts:
   # setuptools-wheel:
   #   type: whl
