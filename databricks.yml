@@ -7,14 +7,14 @@ include:
   - dab_resources/*.yml
   - resources/__generated__/*.yml
 
-sync:
-  exclude:
-    - "resources"
+#sync:
+#  exclude:
+#    - "resources"
 
 experimental:
   scripts:
     preinit:
-      /bin/bash generate-resources.sh --where src --include '*' --exclude 'test*'
+      /bin/bash generate-resources.sh --where src --include '*' --exclude 'test*' --exclude '__*'
 artifacts:
   # setuptools-wheel:
   #   type: whl
