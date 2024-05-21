@@ -20,7 +20,7 @@ fi
 
 function venv_pip_install() {
   . .venv/bin/activate
-  pip -q --disable-pip-version-check install -r requirements.txt
+  pip -q --disable-pip-version-check install -r requirements-dev.txt
 }
 
 if [[ -e ".venv" ]]; then
@@ -40,7 +40,7 @@ elif [[ -z "${VIRTUAL_ENV}" ]]; then
   venv_pip_install
 else
   echo "Detected venv at ${VIRTUAL_ENV}. Make sure to:"
-  echo "  $ pip install -r requirements.txt"
+  echo "  $ pip install -r requirements-dev.txt"
   echo
   echo "or create an new virtual environment:"
   echo "  $ python -m venv .venv"
