@@ -76,8 +76,9 @@ stages:
       displayName: 'Install Databricks CLI'
 
     - script: |
-        pip install poetry
-      displayName: 'Install Poetry'
+        pip install wheel
+
+      displayName: 'Install wheel'
 
 
     - script: databricks bundle deploy --var="warehouse_id=$(BUNDLE_VAR_warehouse_id),node_type=$(BUNDLE_VAR_node_type)" -t $(BUNDLE_TARGET)
