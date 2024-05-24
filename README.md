@@ -1,25 +1,58 @@
 
-# Workflows Atomation using DAB,Terraform,API and CI/CD integration with Azure devops and github actions
+# Workflows Atomation and CI/CD integration 
+
+How to automate Databricks workflow deployments and integrate with your CI/CD pipeline.
+
+## Workflows Atomation
+There are different ways you can automate the workflows deployments.
 
 
-The repo deploys multiple jobs into the Databricks workspace configured using ([Databricks Asset Bundles](https://docs.databricks.com/en/dev-tools/bundles/index.html)) and ([Terraform](https://registry.terraform.io/providers/databricks/databricks/latest/docs))  .
+- Databricks Asset bundles (Yaml Based)
+- PyDabs (Python version of Databricks Asset Bundles)
+- Databricks Terraform Provider
+- Python SDK
+- Rest API
 
-* Set-up-UC-Catalog-and-Schema - This job creates catalog in unity catalog, schemas inside the catalog
+The repo contains examples of automating your workflows using
 
-* DBT-Ingest-customer-data-and-transformation - This is a DBT job which ingests and transforms TPC-H on DBSQL 
+([Databricks Asset Bundles](https://docs.databricks.com/en/dev-tools/bundles/index.html)
 
-* DLT-Ingest-customer-data-and-transformation - This is an equivalent implementation of the DBT transformation using Delta Live tables
+The job definition part under dab_resources folder has examples of deploying diferent Job types in databricks workflows.
 
-* VOLUME-Ingest-Data - This job creates datasets in volume for use by the machine learning job
-
-* Machine-Learning-in-Unitycatalog - This job runs a machine learning model against the dataset from volumes and registers the model to unity catalog model registry
-
-* Assigning-UC-masking-and-filtering-funtions - this job creates masking and filtering funtions in unity catalog and assigns them to tables created by the DLT transformation.
-
+        - Delta Live Table pipeline
+        - DBT pipeline
+        - Wheel file dependency from Unity Catalog Volumes
  
 
-![Customer Sales workflow](images/sales-workflow.png)
+([Terraform](https://registry.terraform.io/providers/databricks/databricks/latest/docs))
 
+
+The terraform code under terraform/modules/workflows has examples of deploying the above jobs using Terraform scripts. 
+
+PyDabs (Private Preview)
+
+The pydabs code under src/jobs are used to generate the corresponding YML file to be deployed as part of the asset bundle deployment.
+
+## CI/CD integration 
+
+The repo has examples fo integrating with different CI/CD platforms 
+
+
+Azure Devops
+
+There are three pipelines defined for Azure Devops integration
+
+   - Deploying a Databricks Asset bundles based workflows to databricks -  azure-pipelines-dab.yml
+   - Deploying a Terraform based workflows to databricks -  azure-pipelines-tf.yml
+   - Deploying a pipeline to run pytests -  azure-pipelines-testcase.yml
+
+
+Github Actions
+
+There are two pipelines defined for Github Actions integration
+
+   - Deploying a Databricks Asset bundles based workflows to databricks -  .github/workflows/dabs_qa.yml
+   - Deploying a Terraform based workflows to databricks -  .github/workflows/tf_qa.yml
 
 
 
