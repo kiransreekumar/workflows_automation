@@ -36,8 +36,8 @@ jobs:
       # See https://github.com/databricks/setup-cli
       - uses: databricks/setup-cli@main
 
-      - uses: Gr1N/setup-poetry@v8
-      - run: poetry --version
+      - run: pip3 install wheel
+
       # Deploy the bundle to the "qa" target as defined
       # in the bundle's settings file.
       - run: databricks bundle deploy
