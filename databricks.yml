@@ -16,14 +16,14 @@ experimental:
     preinit:
       /bin/bash generate-resources.sh --where src --include 'jobs' 
 artifacts:
-  # setuptools-wheel:
-  #   type: whl
-  #   path: ./    
+   setuptools-wheel:
+     type: whl
+     path: ./    
 
-  poetry-wheel:
-    type: whl
-    build: poetry build
-    path: ./      
+  # poetry-wheel:
+  #   type: whl
+  #   build: poetry build
+  #   path: ./      
 
 
 targets:
