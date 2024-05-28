@@ -15,7 +15,7 @@ There are different ways you can automate the workflows deployments.
 
 The repo contains examples of automating your workflows using
 
-([Databricks Asset Bundles](https://docs.databricks.com/en/dev-tools/bundles/index.html)
+([Databricks Asset Bundles](https://docs.databricks.com/en/dev-tools/bundles/index.html))
 
 The job definition part under dab_resources folder has examples of deploying diferent Job types in databricks workflows.
 
