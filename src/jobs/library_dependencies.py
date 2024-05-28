@@ -10,6 +10,6 @@ def cow_task(msg: str):
     cowsay.cow(msg)
 
 
-@job
+@job(name="WAT - Library Dependancy")
 def cowsay_job():
     cow_task("Hello World")

@@ -10,7 +10,7 @@ def create_notebook_job(filename: str):
     def my_notebook():
         pass
 
-    @job(name=filename, resource_name=resource_name)
+    @job(name="WAT - Notebook Job")
     def my_job():
         my_notebook()
 
