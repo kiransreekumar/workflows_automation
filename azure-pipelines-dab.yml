@@ -9,7 +9,7 @@ trigger:
     - release
 
 stages:
-# Run BundleCI stage upon making a PR against the main branch
+# Run BundleCI stage upon making a PR against the /ref/head/main branch 
 - stage: BundleCI
   displayName: 'Bundle validation for workflows_automation'
   # Trigger BundleCI stage on PR against the default branch, and not on pushes to other branches
