@@ -189,7 +189,7 @@ stages:
       # Install Databricks CLI
     - script: |
         curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/v0.220.0/install.sh | sh   
-      displayName: 'Install Databricks CLI'       
+      displayName: 'Install Databricks CLI latest'       
 
     - script: |
         pip install wheel
