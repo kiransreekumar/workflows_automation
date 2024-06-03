@@ -6,87 +6,221 @@ trigger:
   branches:
     include:
     - main
-
-
-# Specify the operating system for the agent that runs on the Azure virtual
-# machine for the build pipeline (known as the build agent). The virtual
-# machine image in this example uses the Ubuntu 22.04 virtual machine
-# image in the Azure Pipeline agent pool. See
-# https://learn.microsoft.com/azure/devops/pipelines/agents/hosted#software
-pool:
-  vmImage: ubuntu-22.04
-
-
+    - release
 
 stages:
-- stage: 'Git_and_Bundles'
+# Run BundleCI stage upon making a PR against the main branch
+- stage: BundleCI
+  displayName: 'Bundle validation for workflows_automation'
+  # Trigger BundleCI stage on PR against the default branch, and not on pushes to other branches
+  condition: |
+    and(
+      not(eq(variables['Build.Reason'], 'IndividualCI')),
+      eq(variables['Build.Reason'], 'PullRequest'),
+      eq(variables['System.PullRequest.TargetBranch'], 'refs/heads/main')
+    )
+
+
 
   jobs:
-  - job: 'Deploy_Bundles'
-    pool:
-      vmImage: 'ubuntu-20.04'
+  - job: StagingBundleCI
+    displayName: 'Staging bundle validation for workflows_automation'
 
+    pool:
+      vmImage: 'ubuntu-latest'
 
     steps:
+    - script: env | sort
+      displayName: 'Environment / Context'
+
     - checkout: self
+      displayName: 'Checkout & Build.Reason: $(Build.Reason) & Build.SourceBranchName: $(Build.SourceBranchName)'
       persistCredentials: true
       clean: true
-# Use Python version v0
-# Use the specified version of Python from the tool cache, optionally adding it to the PATH.
-    - task: UsePythonVersion@0
-      inputs:
-        versionSpec: '3.11' # string. Required. Version spec. Default: 3.x.
-        architecture: 'x64' # 'x86' | 'x64'. Required. Architecture. Default: x64.
 
-# Download the files from the designated branch in the remote Git repository
-# onto the build agent.
 
-# Generate the deployment artifact. To do this, the build agent gathers
-# all the new or updated code to be given to the release pipeline,
-# including the sample Python code, the Python notebooks,
-# the Python wheel library component files, and the related Databricks asset
-# bundle settings.
-# Use git diff to flag files that were added in the most recent Git merge.
-# Then add the files to be used by the release pipeline.
-# The implementation in your pipeline will likely be different.
-# The objective here is to add all files intended for the current release.
+    # Install Databricks CLI
     - script: |
-        git diff --name-only --diff-filter=AMR HEAD^1 HEAD | xargs -I '{}' cp --parents -r '{}' $(Build.BinariesDirectory)
-        mkdir -p $(Build.BinariesDirectory)/src/dabwhl
-        cp $(Build.Repository.LocalPath)/dist/*.* $(Build.BinariesDirectory)/dist
-        cp $(Build.Repository.LocalPath)/*.* $(Build.BinariesDirectory)
-      displayName: 'Get Changes'
-
-# Create the deployment artifact and then publish it to the
-# artifact repository.
-    - task: ArchiveFiles@2
-      inputs:
-        rootFolderOrFile: '$(Build.BinariesDirectory)'
-        includeRootFolder: false
-        archiveType: 'zip'
-        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-        replaceExistingArchive: true
-
-    - task: PublishBuildArtifacts@1
-      inputs:
-        ArtifactName: 'DatabricksBuild'
-
-    - script: |
-        curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
-      displayName: 'Install Databricks CLI'
+        curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/v0.212.2/install.sh | sh   
+      displayName: 'Install Databricks CLI'   
 
     - script: |
         pip install wheel
-
       displayName: 'Install wheel'
 
 
-    - script: databricks bundle deploy --var="warehouse_id=$(BUNDLE_VAR_warehouse_id),node_type=$(BUNDLE_VAR_node_type)" -t $(BUNDLE_TARGET)
-      displayName: 'Deploying Bundles'
+    # Validate bundle to be deployed to the staging workspace
+    - script: |
+        databricks bundle validate --var="warehouse_id=$(BUNDLE_VAR_warehouse_id),node_type=$(BUNDLE_VAR_node_type)" -t staging
+      displayName: 'Validate bundle for staging'
+      env:
+        ARM_TENANT_ID: $(STAGING_AZURE_SP_TENANT_ID)
+        ARM_CLIENT_ID: $(STAGING_AZURE_SP_APPLICATION_ID)
+        ARM_CLIENT_SECRET: $(STAGING_AZURE_SP_CLIENT_SECRET)
 
-   
+
+
+
+
+  - job: prodBundleCI
+    displayName: 'Prod bundle validation for workflows_automation'
+    dependsOn: []   # Removes the implicit dependency on previous job and force prodBundleCI job to run in parallel
+
+    steps:
+    - script: env | sort
+      displayName: 'Environment / Context'
+
+    - checkout: self
+      displayName: 'Checkout & Build.Reason: $(Build.Reason) & Build.SourceBranchName: $(Build.SourceBranchName)'
+      persistCredentials: true
+      clean: true
+
+    # Install Databricks CLI
+    - script: |
+        curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/v0.212.2/install.sh | sh   
+      displayName: 'Install Databricks CLI'        
+
+    - script: |
+        pip install wheel
+      displayName: 'Install wheel'  
+
+    # Validate bundle to be deployed to the prod workspace
+    - script: |
+        databricks bundle validate --var="warehouse_id=$(BUNDLE_VAR_warehouse_id),node_type=$(BUNDLE_VAR_node_type)" -t prod
+      displayName: 'Validate bundle for prod'
+      env:
+        ARM_TENANT_ID: $(PROD_AZURE_SP_TENANT_ID)
+        ARM_CLIENT_ID: $(PROD_AZURE_SP_APPLICATION_ID)
+        ARM_CLIENT_SECRET: $(PROD_AZURE_SP_CLIENT_SECRET)
+
+
+
+
+
+
+
+
+# Run StagingBundleCD stage after successfully merging into the main branch
+- stage: StagingBundleCD
+  displayName: 'Staging bundle deployment for worklow_automation'
+  # Trigger deployment of bundle resources when PRs are merged into the main branch
+  condition: |
+    and(
+      eq(variables['Build.SourceBranch'], 'main'),
+      not(eq(variables['Build.Reason'], 'PullRequest'))
+    )
+
+  jobs:
+  - job: StagingBundleCD
+    displayName: 'Bundle Deployment for workflow_automation Staging'
+
+    pool:
+      vmImage: 'ubuntu-latest'
+
+    steps:
+    - script: env | sort
+      displayName: 'Environment / Context'
+
+    - checkout: self
+      displayName: 'Checkout & Build.Reason: $(Build.Reason) & Build.SourceBranchName: $(Build.SourceBranchName)'
+      persistCredentials: true
+      clean: true
+
+      # Install Databricks CLI
+    - script: |
+        curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/v0.212.2/install.sh | sh   
+      displayName: 'Install Databricks CLI'          
+
+
+    - script: |
+        pip install wheel
+      displayName: 'Install wheel'
+
+
+    # Validate bundle to be deployed to the Staging workspace
+    - script: |
+        databricks bundle validate --var="warehouse_id=$(BUNDLE_VAR_warehouse_id),node_type=$(BUNDLE_VAR_node_type)" -t staging
+      displayName: 'Validate bundle for staging'
+      env:
+        ARM_TENANT_ID: $(STAGING_AZURE_SP_TENANT_ID)
+        ARM_CLIENT_ID: $(STAGING_AZURE_SP_APPLICATION_ID)
+        ARM_CLIENT_SECRET: $(STAGING_AZURE_SP_CLIENT_SECRET)
+        
+
+    # Deploy bundle to Staging workspace
+    - script: |
+        databricks bundle deploy --var="warehouse_id=$(BUNDLE_VAR_warehouse_id),node_type=$(BUNDLE_VAR_node_type)" -t staging
+      displayName: 'Deploy bundle to staging'
+      env:
+        ARM_TENANT_ID: $(STAGING_AZURE_SP_TENANT_ID)
+        ARM_CLIENT_ID: $(STAGING_AZURE_SP_APPLICATION_ID)
+        ARM_CLIENT_SECRET: $(STAGING_AZURE_SP_CLIENT_SECRET)
+
     - script: databricks fs cp $(Build.Repository.LocalPath)/dist/*.whl dbfs:/Volumes/wheel_catalog/wheel_schema/wheel_volume --overwrite
       displayName: 'Copy to volumes'
+
+
+# Run prod bundle CD stage after successfully merging into the release branch
+- stage: prodBundleCD
+  displayName: 'Prod bundle deployment for workflows_automation'
+  # Trigger deployment of Bundle resources when PRs are merged into the release branch
+  condition: |
+    and(
+      eq(variables['Build.SourceBranch'], 'refs/heads/release'),
+      not(eq(variables['Build.Reason'], 'PullRequest'))
+    )
+
+  jobs:
+  - job: prodBundleCD
+    displayName: 'Bundle deployment for workflows_automation prod'
+
+    pool:
+      vmImage: 'ubuntu-latest'
+
+    steps:
+    - script: env | sort
+      displayName: 'Environment / Context'
+
+    - checkout: self
+      displayName: 'Checkout & Build.Reason: $(Build.Reason) & Build.SourceBranchName: $(Build.SourceBranchName)'
+      persistCredentials: true
+      clean: true
+
+      # Install Databricks CLI
+    - script: |
+        curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/v0.212.2/install.sh | sh   
+      displayName: 'Install Databricks CLI'       
+
+    - script: |
+        pip install wheel
+      displayName: 'Install wheel'   
+
+    # Validate bundle to be deployed to the prod workspace
+    - script: |
+        databricks bundle validate --var="warehouse_id=$(BUNDLE_VAR_warehouse_id),node_type=$(BUNDLE_VAR_node_type)" -t prod
+      workingDirectory: $(workingDirectory)
+      displayName: 'Validate bundle for prod'
+      env:
+        ARM_TENANT_ID: $(PROD_AZURE_SP_TENANT_ID)
+        ARM_CLIENT_ID: $(PROD_AZURE_SP_APPLICATION_ID)
+        ARM_CLIENT_SECRET: $(PROD_AZURE_SP_CLIENT_SECRET)
+        
+
+    # Deploy bundle to prod workspace
+    - script: |
+        databricks bundle deploy --var="warehouse_id=$(BUNDLE_VAR_warehouse_id),node_type=$(BUNDLE_VAR_node_type)" -t prod
+      workingDirectory: $(workingDirectory)
+      displayName: 'Deploy bundle to prod'
+      env:
+        ARM_TENANT_ID: $(PROD_AZURE_SP_TENANT_ID)
+        ARM_CLIENT_ID: $(PROD_AZURE_SP_APPLICATION_ID)
+        ARM_CLIENT_SECRET: $(PROD_AZURE_SP_CLIENT_SECRET)
+
+    - script: databricks fs cp $(Build.Repository.LocalPath)/dist/*.whl dbfs:/Volumes/wheel_catalog/wheel_schema/wheel_volume --overwrite
+      displayName: 'Copy to volumes'
+
+   
+
     
 
 
