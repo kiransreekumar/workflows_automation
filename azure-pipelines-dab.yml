@@ -105,6 +105,11 @@ stages:
   displayName: 'Staging bundle deployment for worklow_automation'
   # Trigger deployment of bundle  when PRs are merged into the main branch
 
+  condition: |
+    and(
+      eq(variables['Build.SourceBranch'], 'refs/heads/main'),
+      not(eq(variables['Build.Reason'], 'PullRequest'))
+    )
 
   jobs:
   - job: StagingBundleCD
