@@ -60,7 +60,7 @@ stages:
     - script: terraform -chdir=terraform/modules/workflows/  validate
       displayName: 'Terraform Validate'
       workingDirectory: "$(Build.SourcesDirectory)"
-    - script: terraform -chdir=terraform/modules/workflows/  plan 
+    - script: terraform -chdir=terraform/modules/workflows/ plan -lock=false
       displayName: 'Terraform Plan'
       workingDirectory: "$(Build.SourcesDirectory)"
     - script: terraform -chdir=terraform/modules/workflows/  apply -auto-approve
