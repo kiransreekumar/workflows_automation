@@ -104,6 +104,10 @@ stages:
 - stage: StagingBundleCD
   displayName: 'Staging bundle deployment for worklow_automation'
   # Trigger deployment of bundle resources when PRs are merged into the main branch
+- powershell: |    
+   Write-Host variables['Build.SourceBranch'] 
+   Write-Host variables['Build.Reason']
+  displayName: 'Print parameters in JSON format'
   condition: |
     and(
       eq(variables['Build.SourceBranch'], 'main'),
