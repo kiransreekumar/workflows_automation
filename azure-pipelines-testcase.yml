@@ -5,38 +5,38 @@ trigger:
   branches:
     include:
     - main
+  paths:
+    include:
+      - 'azure-pipelines-testcase.yml'   
 
 
-stages:
-- stage: 'Git_and_Dependencies'
-  condition: |
-    and(
-      ne(variables['Build.SourceBranch'], 'refs/heads/releases'),
-      not(startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
-    )
-  jobs:
-  - job: 'onPushJob'
+jobs:
+  - job: UnitTests
+    displayName: 'Unit Tests'
+    # Trigger unit test upon making a PR against the /ref/head/main branch
+    condition: |
+      and(
+        not(eq(variables['Build.Reason'], 'IndividualCI')),
+        eq(variables['Build.Reason'], 'PullRequest'),
+        eq(variables['System.PullRequest.TargetBranch'], 'main')
+      )
     pool:
-      vmImage: 'ubuntu-20.04'
+      vmImage: 'ubuntu-latest'
 
     steps:
     - script: env | sort
       displayName: 'Environment / Context'
+
     - checkout: self
-      persistCredentials: "true"
-      clean: "true"
+      persistCredentials: true
+      clean: true
       displayName: 'Checkout & Build.Reason: $(Build.Reason) & Build.SourceBranchName: $(Build.SourceBranchName)'
 
-
-- stage: 'Py_tests'
-  displayName: 'Running test cases'
-  jobs:
-  - job: 'test_case'
-    steps:
     - task: UsePythonVersion@0
+      displayName: 'Use Python 3.8'
       inputs:
-        versionSpec: '3.10.x'
-        architecture: 'x64'
+        versionSpec: 3.10.x
+
 
     - script: |
         python -m pip install --upgrade pip
@@ -44,14 +44,8 @@ stages:
         pip install -e .
       displayName: 'Install dependencies'
 
-    - bash: 'pytest --junitxml=$(Build.StagingDirectory)/test.xml' 
+    - script: |
+        pytest --junitxml=$(Build.StagingDirectory)/test.xml
       workingDirectory: 'src'
-      displayName: 'Run test'
-      
-
-    - task: PublishTestResults@2
-      displayName: 'Publish test result /test.xml'
-      inputs:
-        testResultsFiles: '$(Build.StagingDirectory)/test.xml'
-        testRunTitle: pytests
+      displayName: 'Run unit tests with pytest'
 
