@@ -103,7 +103,11 @@ stages:
 # Run StagingBundleCD stage after successfully merging into the main branch
 - stage: StagingBundleCD
   displayName: 'Staging bundle deployment for worklow_automation'
-  # Trigger deployment of bundle resources when PRs are merged into the main branch
+  # Trigger deployment of bundle  when PRs are merged into the main branch
+- script: |   
+   echo 'variables['Build.SourceBranch']'
+   echo  'variables['Build.Reason']'
+  displayName: 'Print parameters in JSON format'
   condition: |
     and(
       eq(variables['Build.SourceBranch'], 'main'),
