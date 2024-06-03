@@ -9,7 +9,7 @@ trigger:
     - release
 
 stages:
-# Run BundleCI stage upon making a PR against the main branch
+# Run BundleCI stage upon making a PR against the /ref/head/main branch 
 - stage: BundleCI
   displayName: 'Bundle validation for workflows_automation'
   # Trigger BundleCI stage on PR against the default branch, and not on pushes to other branches
@@ -17,7 +17,7 @@ stages:
     and(
       not(eq(variables['Build.Reason'], 'IndividualCI')),
       eq(variables['Build.Reason'], 'PullRequest'),
-      eq(variables['System.PullRequest.TargetBranch'], 'refs/heads/main')
+      eq(variables['System.PullRequest.TargetBranch'], 'main')
     )
 
 
@@ -41,7 +41,7 @@ stages:
 
     # Install Databricks CLI
     - script: |
-        curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/v0.212.2/install.sh | sh   
+        curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/v0.220.0/install.sh | sh   
       displayName: 'Install Databricks CLI'   
 
     - script: |
@@ -77,7 +77,7 @@ stages:
 
     # Install Databricks CLI
     - script: |
-        curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/v0.212.2/install.sh | sh   
+        curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/v0.220.0/install.sh | sh   
       displayName: 'Install Databricks CLI'        
 
     - script: |
@@ -128,7 +128,7 @@ stages:
 
       # Install Databricks CLI
     - script: |
-        curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/v0.212.2/install.sh | sh   
+        curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/v0.220.0/install.sh | sh   
       displayName: 'Install Databricks CLI'          
 
 
@@ -188,7 +188,7 @@ stages:
 
       # Install Databricks CLI
     - script: |
-        curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/v0.212.2/install.sh | sh   
+        curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/v0.220.0/install.sh | sh   
       displayName: 'Install Databricks CLI'       
 
     - script: |
