@@ -48,7 +48,6 @@ targets:
   test:
     mode: development
     workspace:
-      root_path: /Shared/.bundle/prod/${bundle.name}
       host: https://adb-365805097001262.2.azuredatabricks.net
     variables:
       dbt_catalog: sales_dbt
@@ -63,7 +62,6 @@ targets:
   staging:
     mode: development
     workspace:
-      root_path: /Shared/.bundle/prod/${bundle.name}
       host: https://adb-365805097001262.2.azuredatabricks.net
     variables:
       dbt_catalog: sales_dbt
