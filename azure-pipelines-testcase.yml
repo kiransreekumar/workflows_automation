@@ -13,7 +13,7 @@ trigger:
 jobs:
   - job: UnitTests
     displayName: 'Unit Tests'
-    # Trigger unit test upon making a PR against  main branch
+    # Trigger unit test upon making a PR against the main branch
     condition: |
       and(
         not(eq(variables['Build.Reason'], 'IndividualCI')),
