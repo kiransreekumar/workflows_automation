@@ -38,7 +38,7 @@ jobs:
       # See https://github.com/databricks/setup-cli
       - uses: databricks/setup-cli@main
 
-      - run: pip3 install pytest
+      - run: pip3 install -r requirements.txt
 
       # Deploy the bundle to the "qa" target as defined
       # in the bundle's settings file.
