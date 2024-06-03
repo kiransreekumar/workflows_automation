@@ -23,7 +23,7 @@ def test_lowercase_names():
         }
     ]
 
-    spark = DatabricksSession.builder.profile("e2-demo-field-eng").getOrCreate()
+    spark = DatabricksSession.builder.getOrCreate()
     test_df = spark.createDataFrame(map(lambda x: Row(**x), test_data))
 
     # ACT 
@@ -57,7 +57,7 @@ def test_uppercase_names():
         }
     ]
 
-    spark = DatabricksSession.builder.profile("e2-demo-field-eng").getOrCreate()
+    spark = DatabricksSession.builder.getOrCreate()
     test_df = spark.createDataFrame(map(lambda x: Row(**x), test_data))
     
     # ACT 

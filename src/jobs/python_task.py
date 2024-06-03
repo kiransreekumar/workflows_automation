@@ -15,7 +15,7 @@ def find_area_id(search_query: str) -> str:
     # Extract the area ID from the response
     if len(data) > 0:
         area_id = data[0]["osm_id"]
-        print("Area ID:", area_id)
+        print("Area ID: ", area_id)
 
         return area_id
     else:

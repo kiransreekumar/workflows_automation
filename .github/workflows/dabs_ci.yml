@@ -38,15 +38,13 @@ jobs:
       # See https://github.com/databricks/setup-cli
       - uses: databricks/setup-cli@main
 
-      - run: pip3 install pytest
+      - run: pip3 install -r requirements.txt
 
       # Deploy the bundle to the "qa" target as defined
       # in the bundle's settings file.
-      - run: pytest --cov src --cov-report=xml src/tests"
+      - run: pytest --cov-report=xml src/tests
         working-directory: .
         env:
           DATABRICKS_TOKEN: ${{ secrets.SP_TOKEN }}
-          DATABRICKS_BUNDLE_ENV: qa
+          DATABRICKS_CLUSTER_ID: ${{ vars.DATABRICKS_CLUSTER_ID }}
           DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
-          BUNDLE_VAR_warehouse_id: ${{ vars.BUNDLE_VAR_warehouse_id }}
-          BUNDLE_VAR_node_type: ${{ vars.BUNDLE_VAR_node_type }}
