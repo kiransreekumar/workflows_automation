@@ -66,7 +66,7 @@ resources:
         - task_key: VOLUME-Ingest-Data
           depends_on:
           - task_key: Set-up-UC-Catalog-and-Schema
-          job_cluster_key: pii_cluster
+          job_cluster_key: dab_shared_cluster
           notebook_task:
             base_parameters:
               volume_catalog: ${var.volume_catalog}
@@ -77,17 +77,6 @@ resources:
 
            
       job_clusters:
-        - job_cluster_key: pii_cluster
-          new_cluster:
-            spark_version: ${var.spark_version}
-            node_type_id: ${var.node_type}
-            custom_tags:
-              ResourceClass: MultiNode
-            spark_env_vars:
-              PYSPARK_PYTHON: /databricks/python3/bin/python3
-            data_security_mode: SINGLE_USER
-            num_workers: 8
-
         - job_cluster_key: dab_shared_cluster
           new_cluster:
             spark_version: ${var.spark_version}
@@ -97,7 +86,7 @@ resources:
             spark_env_vars:
               PYSPARK_PYTHON: /databricks/python3/bin/python3
             data_security_mode: USER_ISOLATION
-            num_workers: 8
+            num_workers: 1
 
 
       git_source:
