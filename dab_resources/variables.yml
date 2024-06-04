@@ -1,7 +1,7 @@
 variables:
   volume_catalog:
     description: Volume Catalog to use
-    default: sales_dbt
+    default: ${bundle.target}
   volume_schema:
     description: Volume schema to use
     default: wine

@@ -18,7 +18,7 @@ resources:
         - level: CAN_MANAGE
           group_name: users
       
-      catalog: sales_dlt
+      catalog: ${var.dlt_catalog}
       target: sales_${workspace.current_user.short_name}
 
       clusters:
