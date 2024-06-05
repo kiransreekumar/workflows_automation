@@ -25,7 +25,7 @@
 # Provide them via DB widgets or notebook arguments.
 #
 # Name of the current environment
-dbutils.widgets.dropdown("env", "None", ["None", "staging", "prod"], "Environment Name")
+dbutils.widgets.dropdown("env", "None", ["None", "test", "prod"], "Environment Name")
 
 # COMMAND ----------
 

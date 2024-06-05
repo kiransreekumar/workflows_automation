@@ -48,13 +48,13 @@ targets:
             git_provider: gitHub
             git_branch: main
 
-  staging:
+  test:
     mode: development
     workspace:
       host: https://adb-365805097001262.2.azuredatabricks.net
     variables:
-      dbt_catalog: staging
-      dlt_catalog: staging
+      dbt_catalog: test
+      dlt_catalog: test
       dlt_schema: dlt
       dbt_schema: dbt
     resources:
