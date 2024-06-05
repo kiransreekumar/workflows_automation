@@ -17,7 +17,7 @@ resources:
       model:
         name: ${var.model_name}
         catalog_name: ${bundle.target}
-        schema_name: mlops_${workspace.current_user.short_name}
+        schema_name: mlops
         comment: Registered model in Unity Catalog for the "mlops" ML Project for ${bundle.target} deployment target.
         depends_on:
           - resources.jobs.model_training_job.id

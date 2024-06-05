@@ -19,7 +19,7 @@ resources:
           group_name: users
       
       catalog: ${var.dlt_catalog}
-      target: sales_${workspace.current_user.short_name}
+      target: sales
 
       clusters:
             - label: default

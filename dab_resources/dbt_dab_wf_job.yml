@@ -17,10 +17,10 @@ resources:
           notebook_task:
             base_parameters:
               dbt_catalog: ${var.dbt_catalog}
-              dbt_schema: ${var.dbt_schema}_${workspace.current_user.short_name}
+              dbt_schema: ${var.dbt_schema}
               dlt_catalog: ${var.dlt_catalog}
-              dlt_schema: ${var.dlt_schema}_${workspace.current_user.short_name}
-              volume_schema: ${var.volume_schema}_${workspace.current_user.short_name}
+              dlt_schema: ${var.dlt_schema}
+              volume_schema: ${var.volume_schema}
               pii_volume_schema: ${var.pii_volume_schema}
             notebook_path: ${var.initial_job}
             source: GIT
@@ -37,7 +37,7 @@ resources:
               - dbt build
             warehouse_id: ${var.warehouse_id} 
             catalog: ${var.dbt_catalog}
-            schema: ${var.dbt_schema}_${workspace.current_user.short_name}
+            schema: ${var.dbt_schema}
           job_cluster_key: dab_shared_cluster
           libraries:
             - pypi:
@@ -50,9 +50,9 @@ resources:
           notebook_task:
             base_parameters:
               dbt_catalog: ${var.dbt_catalog}
-              dbt_schema: ${var.dbt_schema}_${workspace.current_user.short_name}
+              dbt_schema: ${var.dbt_schema}
               dlt_catalog: ${var.dlt_catalog}
-              dlt_schema: ${var.dlt_schema}_${workspace.current_user.short_name}
+              dlt_schema: ${var.dlt_schema}
             notebook_path: ${var.security_job}
             source: GIT
 
@@ -70,8 +70,8 @@ resources:
           notebook_task:
             base_parameters:
               volume_catalog: ${var.volume_catalog}
-              volume_schema: ${var.volume_schema}_${workspace.current_user.short_name}
-              pii_volume_schema: ${var.pii_volume_schema}_${workspace.current_user.short_name}
+              volume_schema: ${var.volume_schema}
+              pii_volume_schema: ${var.pii_volume_schema}
             notebook_path: ${var.volume_job}
             source: GIT
 
