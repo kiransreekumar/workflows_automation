@@ -33,14 +33,14 @@ jobs:
       displayName: 'Checkout & Build.Reason: $(Build.Reason) & Build.SourceBranchName: $(Build.SourceBranchName)'
 
     - task: UsePythonVersion@0
-      displayName: 'Use Python 3.8'
+      displayName: 'Use Python 3.10'
       inputs:
         versionSpec: 3.10.x
 
 
     - script: |
         python -m pip install --upgrade pip
-        pip install pytest
+        pip install pytest pyspark databricks-connect
       displayName: 'Install dependencies'
 
     - script: |
