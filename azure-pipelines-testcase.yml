@@ -46,7 +46,7 @@ jobs:
     - script: |
         DATABRICKS_CLUSTER_ID=$(TEST_CLUSTER_ID) pytest --junitxml=$(Build.StagingDirectory)/test.xml
       workingDirectory: 'src'
-      displayName: 'Run unit tests with pytest'
+      displayName: 'Run unit test cases with pytest'
       env:
         ARM_TENANT_ID: $(STAGING_AZURE_SP_TENANT_ID)
         ARM_CLIENT_ID: $(STAGING_AZURE_SP_APPLICATION_ID)
