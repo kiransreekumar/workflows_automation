@@ -157,7 +157,7 @@ stages:
         ARM_CLIENT_ID: $(STAGING_AZURE_SP_APPLICATION_ID)
         ARM_CLIENT_SECRET: $(STAGING_AZURE_SP_CLIENT_SECRET)
 
-    - script: databricks fs cp $(Build.Repository.LocalPath)/dist/*.whl dbfs:/Volumes/staging/wheel/wheel_volume --overwrite
+    - script: databricks fs cp $(Build.Repository.LocalPath)/dist/*.whl dbfs:/Volumes/test/wheel/wheel_volume --overwrite
       displayName: 'Copy to volumes'
       env:
         ARM_TENANT_ID: $(STAGING_AZURE_SP_TENANT_ID)
