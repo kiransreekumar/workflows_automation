@@ -51,7 +51,7 @@ stages:
 
     # Validate bundle to be deployed to the staging workspace
     - script: |
-        databricks bundle validate --var="warehouse_id=$(BUNDLE_VAR_warehouse_id),node_type=$(BUNDLE_VAR_node_type)" -t staging
+        databricks bundle validate --var="warehouse_id=$(BUNDLE_VAR_warehouse_id),node_type=$(BUNDLE_VAR_node_type)" -t test
       displayName: 'Validate bundle for staging'
       env:
         ARM_TENANT_ID: $(STAGING_AZURE_SP_TENANT_ID)
@@ -140,7 +140,7 @@ stages:
 
     # Validate bundle to be deployed to the Staging workspace
     - script: |
-        databricks bundle validate --var="warehouse_id=$(BUNDLE_VAR_warehouse_id),node_type=$(BUNDLE_VAR_node_type)" -t staging
+        databricks bundle validate --var="warehouse_id=$(BUNDLE_VAR_warehouse_id),node_type=$(BUNDLE_VAR_node_type)" -t test
       displayName: 'Validate bundle for staging'
       env:
         ARM_TENANT_ID: $(STAGING_AZURE_SP_TENANT_ID)
@@ -150,7 +150,7 @@ stages:
 
     # Deploy bundle to Staging workspace
     - script: |
-        databricks bundle deploy --var="warehouse_id=$(BUNDLE_VAR_warehouse_id),node_type=$(BUNDLE_VAR_node_type)" -t staging
+        databricks bundle deploy --var="warehouse_id=$(BUNDLE_VAR_warehouse_id),node_type=$(BUNDLE_VAR_node_type)" -t test
       displayName: 'Deploy bundle to staging'
       env:
         ARM_TENANT_ID: $(STAGING_AZURE_SP_TENANT_ID)
