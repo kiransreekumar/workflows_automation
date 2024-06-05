@@ -4,8 +4,6 @@ resources:
   jobs:
     dbt_dss_job:
       name: DAB-Customer Order Details
-      tags:
-        created_by: ${workspace.current_user.userName}
       format: MULTI_TASK
       permissions:
         - group_name: users

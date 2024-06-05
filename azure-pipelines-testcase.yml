@@ -45,7 +45,7 @@ jobs:
       displayName: 'Install dependencies'
 
     - script: |
-        pytest --junitxml=$(Build.StagingDirectory)/test.xml
+        DATABRICKS_CLUSTER_ID=$(TEST_CLUSTER_ID) pytest --junitxml=$(Build.StagingDirectory)/test.xml
       workingDirectory: 'src'
       displayName: 'Run unit tests with pytest'
       env:
