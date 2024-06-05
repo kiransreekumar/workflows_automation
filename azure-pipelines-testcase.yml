@@ -39,13 +39,13 @@ jobs:
 
 
     - script: |
-        DATABRICKS_CLUSTER_ID=$(TEST_CLUSTER_ID) python -m pip install --upgrade pip
+        python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install -e .
       displayName: 'Install dependencies'
 
     - script: |
-        pytest --junitxml=$(Build.StagingDirectory)/test.xml
+        DATABRICKS_CLUSTER_ID=$(TEST_CLUSTER_ID) pytest --junitxml=$(Build.StagingDirectory)/test.xml
       workingDirectory: 'src'
       displayName: 'Run unit tests with pytest'
       env:
