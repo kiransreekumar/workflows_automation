@@ -58,7 +58,7 @@ dbutils.widgets.text(
 )
 # Unity Catalog registered model name to use for the trained mode.
 dbutils.widgets.text(
-    "model_name", "dev.mlops_${workspace.current_user.short_name}.my_mlops_project-model", label="Full (Three-Level) Model Name"
+    "model_name", "dev.mlops.my_mlops_project-model", label="Full (Three-Level) Model Name"
 )
 
 # Pickup features table name

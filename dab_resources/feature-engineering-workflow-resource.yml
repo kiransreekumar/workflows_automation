@@ -22,7 +22,7 @@ resources:
               input_start_date: ""
               input_end_date: ""
               timestamp_column: tpep_pickup_datetime
-              output_table_name: ${bundle.target}.mlops_${workspace.current_user.short_name}.trip_pickup_features
+              output_table_name: ${bundle.target}.mlops.trip_pickup_features
               features_transform_module: pickup_features
               primary_keys: zip
               # git source information of current ML resource deployment. It will be persisted as part of the workflow run
@@ -38,7 +38,7 @@ resources:
               input_start_date: ""
               input_end_date: ""
               timestamp_column: tpep_dropoff_datetime
-              output_table_name: ${bundle.target}.mlops_${workspace.current_user.short_name}.trip_dropoff_features
+              output_table_name: ${bundle.target}.mlops.trip_dropoff_features
               features_transform_module: dropoff_features
               primary_keys: zip
               # git source information of current ML resource deployment. It will be persisted as part of the workflow run
