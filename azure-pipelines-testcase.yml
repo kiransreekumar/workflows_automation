@@ -58,11 +58,7 @@ jobs:
     displayName: 'Integration Tests'
     # Integration tests will only run upon  tests successfully passing
     dependsOn: UnitTests
-    condition: and(succeeded() , 
-        not(eq(variables['Build.Reason'], 'PullRequest')),
-        eq(variables['Build.Reason'], 'IndividualCI'),
-        eq(variables['System.PullRequest.TargetBranch'], 'main')
-      )
+    condition: succeeded()
     pool:
       vmImage: 'ubuntu-latest'
 
@@ -88,7 +84,7 @@ jobs:
 
     # Validate bundle to be deployed to the staging workspace
     - script: |
-        databricks bundle validate --var="warehouse_id=$(BUNDLE_VAR_warehouse_id),node_type=$(BUNDLE_VAR_node_type)" -t staging
+        databricks bundle validate --var="warehouse_id=$(BUNDLE_VAR_warehouse_id),node_type=$(BUNDLE_VAR_node_type)" -t test
       displayName: Validate bundle for test deployment target in staging workspace
       env:
         ARM_TENANT_ID: $(STAGING_AZURE_SP_TENANT_ID)
@@ -98,7 +94,7 @@ jobs:
 
     # Deploy bundle to staging workspace
     - script: |
-        databricks bundle deploy --var="warehouse_id=$(BUNDLE_VAR_warehouse_id),node_type=$(BUNDLE_VAR_node_type)" -t staging
+        databricks bundle deploy --var="warehouse_id=$(BUNDLE_VAR_warehouse_id),node_type=$(BUNDLE_VAR_node_type)" -t test
       displayName: Deploy bundle to test deployment target in staging workspace
       env:
         ARM_TENANT_ID: $(STAGING_AZURE_SP_TENANT_ID)

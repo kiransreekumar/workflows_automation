@@ -9,7 +9,7 @@ common_permissions:
 resources:
   jobs:
     write_feature_table_job:
-      name: ${bundle.target} Write-feature-table-job
+      name: Write-feature-table-job
       tasks:
         - task_key: PickupFeatures
           job_cluster_key: write_feature_table_job_cluster

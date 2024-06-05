@@ -6,7 +6,7 @@ permissions:
 resources:
   jobs:
     batch_inference_job:
-      name: ${bundle.target} Batch-inference
+      name: Batch-inference
       tasks:
         - task_key: batch_inference_job
           job_cluster_key: infer_job_cluster
