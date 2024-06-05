@@ -58,11 +58,11 @@ jobs:
     displayName: 'Integration Tests'
     # Integration tests will only run upon  tests successfully passing
     dependsOn: UnitTests
-    condition: ${{ succeeded() , and(
+    condition: and(succeeded() , 
         not(eq(variables['Build.Reason'], 'PullRequest')),
         eq(variables['Build.Reason'], 'IndividualCI'),
         eq(variables['System.PullRequest.TargetBranch'], 'main')
-      ) }}
+      )
     pool:
       vmImage: 'ubuntu-latest'
 
