@@ -10,7 +10,7 @@ trigger:
 
 stages:
 # Run TerraformCI stage upon making a PR against the /ref/head/main branch 
-- stage: Terraform CI
+- stage: TerraformCI
   displayName: 'Terraform Plan for workflows_automation'
   # Trigger TerraformCI stage on PR against the default branch, and not on pushes to other branches
   condition: |
