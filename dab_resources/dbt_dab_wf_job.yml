@@ -3,7 +3,7 @@
 resources:
   jobs:
     dbt_dss_job:
-      name: DAB-Customer Order Details
+      name: DABS - Customer Order Details
       format: MULTI_TASK
       permissions:
         - group_name: users

@@ -3,7 +3,7 @@
 resources:
   jobs:
     run-dabdemo-notebook:
-      name: DAB-Wheel-File-Dependency
+      name: DABS - Wheel-File-Dependency
       permissions:
         - group_name: users
           level: CAN_MANAGE
