@@ -16,7 +16,7 @@ on:
       - synchronize
     branches:
       - main
-    paths: ['src/**','databricks_notebooks/**']
+    paths: ['src/**','databricks_notebooks/**','dab_resources/**']
 
 jobs:
   # Used by the "pipeline_update" job to deploy the bundle.
