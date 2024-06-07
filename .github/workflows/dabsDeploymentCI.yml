@@ -1,7 +1,7 @@
 
 # This workflow validates, deploys, and runs the specified bundle
 # within a pre-production target named "qa".
-name: "DABS & PyDABS Deployment"
+name: "DABS & PyDABS Continuous Integration"
 
 # Ensure that only a single job or workflow using the same concurrency group
 # runs at a time.
@@ -16,7 +16,6 @@ on:
       - synchronize
     branches:
       - main
-      - release
 
 jobs:
   # Used by the "pipeline_update" job to deploy the bundle.
