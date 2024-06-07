@@ -180,8 +180,6 @@ stages:
   jobs:
   - job: prodBundleCD
     displayName: 'Bundle deployment for workflows_automation prod'
-    environment: 
-      name: 'prod'
     pool:
       vmImage: 'ubuntu-latest'
 
