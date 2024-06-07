@@ -45,7 +45,6 @@ jobs:
       - run: databricks bundle validate --var="warehouse_id=$(BUNDLE_VAR_warehouse_id),node_type=$(BUNDLE_VAR_node_type)" -t test
         working-directory: .
         env:
-          DATABRICKS_TOKEN: ${{ secrets.SP_TOKEN }}
           DATABRICKS_BUNDLE_ENV: ${{ vars.DATABRICKS_BUNDLE_ENV }}
           DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
           BUNDLE_VAR_warehouse_id: ${{ vars.BUNDLE_VAR_warehouse_id }}
@@ -75,11 +74,13 @@ jobs:
       - run: databricks bundle validate --var="warehouse_id=$(BUNDLE_VAR_warehouse_id),node_type=$(BUNDLE_VAR_node_type)" -t prod
         working-directory: .
         env:
-          DATABRICKS_TOKEN: ${{ secrets.SP_TOKEN }}
           DATABRICKS_BUNDLE_ENV: ${{ vars.DATABRICKS_BUNDLE_ENV }}
           DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
           BUNDLE_VAR_warehouse_id: ${{ vars.BUNDLE_VAR_warehouse_id }}
           BUNDLE_VAR_node_type: ${{ vars.BUNDLE_VAR_node_type }}
+          ARM_TENANT_ID: ${{ vars.TENANT_ID }}
+          ARM_CLIENT_ID: ${{ vars.CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
 
 
 
