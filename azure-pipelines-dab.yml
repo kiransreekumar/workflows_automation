@@ -185,9 +185,9 @@ stages:
     strategy:
       runOnce:
         deploy:
-          steps:
-          -script: echo Current Environment - $(environment) 
-          displayName: '$(environment) environment'
+        steps:
+        -script: echo Current Environment - $(environment) 
+        displayName: '$(environment) environment'
 
   - job: prodBundleCD
     displayName: 'Bundle deployment for workflows_automation prod'
