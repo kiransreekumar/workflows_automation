@@ -42,7 +42,7 @@ jobs:
 
       # Deploy the bundle to the "qa" target as defined
       # in the bundle's settings file.
-      - run: databricks bundle validate --var="warehouse_id=$(BUNDLE_VAR_warehouse_id),node_type=$(BUNDLE_VAR_node_type)" -t test
+      - run: databricks bundle validate --var="warehouse_id=${{ vars.BUNDLE_VAR_warehouse_id }},node_type=${{ vars.BUNDLE_VAR_node_type }}" -t test
         working-directory: .
         env:
           DATABRICKS_BUNDLE_ENV: ${{ vars.DATABRICKS_BUNDLE_ENV }}
@@ -71,7 +71,7 @@ jobs:
 
       # Deploy the bundle to the "qa" target as defined
       # in the bundle's settings file.
-      - run: databricks bundle validate --var="warehouse_id=$(BUNDLE_VAR_warehouse_id),node_type=$(BUNDLE_VAR_node_type)" -t prod
+      - run: databricks bundle validate --var="warehouse_id=${{ vars.BUNDLE_VAR_warehouse_id }},node_type=${{ vars.BUNDLE_VAR_node_type }}" -t prod
         working-directory: .
         env:
           DATABRICKS_BUNDLE_ENV: ${{ vars.DATABRICKS_BUNDLE_ENV }}
