@@ -178,6 +178,11 @@ stages:
       not(eq(variables['Build.Reason'], 'PullRequest'))
     )
   jobs:
+  - deployment: prod_deploy
+    environment: prod
+    workspace:
+      clean: all
+
   - job: prodBundleCD
     displayName: 'Bundle deployment for workflows_automation prod'
     pool:
