@@ -44,7 +44,7 @@ jobs:
 
       # Deploy the bundle to the "qa" target as defined
       # in the bundle's settings file.
-      - run: DATABRICKS_CLUSTER_ID=${{ vars.TEST_CLUSTER_ID }} pytest --cov-report=xml src/tests
+      - run: DATABRICKS_CLUSTER_ID=${{ vars.TEST_CLUSTER_ID }} pytest src/tests
         working-directory: .
         env:
           DATABRICKS_TOKEN: ${{ secrets.SP_TOKEN }}
