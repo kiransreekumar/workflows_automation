@@ -22,7 +22,7 @@ jobs:
   # Bundle validation is automatically performed as part of this deployment.
   # If validation fails, this workflow fails.
   stagingbuild:
-    if: github.ref == 'main'
+    if: github.ref == 'refs/heads/main'
     name: "Deploy Bundle in test"
     runs-on: ubuntu-latest
     environment: dev
@@ -79,7 +79,7 @@ jobs:
 
 
   prodbuild:
-    if: github.ref == 'release'
+    if: github.ref == 'refs/heads/release'
     name: "Deploy Bundle in Prod"
     runs-on: ubuntu-latest
     environment: dev
