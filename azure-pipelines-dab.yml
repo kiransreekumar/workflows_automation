@@ -178,9 +178,9 @@ stages:
       not(eq(variables['Build.Reason'], 'PullRequest'))
     )
   jobs:
+  - environment: prod
   - job: prodBundleCD
     displayName: 'Bundle deployment for workflows_automation prod'
-    environment: prod
     pool:
       vmImage: 'ubuntu-latest'
 
