@@ -25,7 +25,7 @@ jobs:
   deploy:
     name: "Run Tests"
     runs-on: ubuntu-latest
-    environment: qa
+    environment: dev
     steps:
       # Check out this repo, so that this workflow can access it.
       - uses: actions/checkout@v3
@@ -42,9 +42,8 @@ jobs:
 
       # Deploy the bundle to the "qa" target as defined
       # in the bundle's settings file.
-      - run: pytest --cov-report=xml src/tests
+      - run: DATABRICKS_CLUSTER_ID=${{ vars.TEST_CLUSTER_ID }} pytest --cov-report=xml src/tests
         working-directory: .
         env:
           DATABRICKS_TOKEN: ${{ secrets.SP_TOKEN }}
-          DATABRICKS_CLUSTER_ID: ${{ vars.DATABRICKS_CLUSTER_ID }}
           DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
