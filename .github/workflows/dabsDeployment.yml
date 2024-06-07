@@ -25,7 +25,7 @@ jobs:
   stagingbuild:
     name: "Validate Bundle in test"
     runs-on: ubuntu-latest
-    environment: qa
+    environment: dev
     steps:
       # Check out this repo, so that this workflow can access it.
       - uses: actions/checkout@v3
@@ -55,7 +55,7 @@ jobs:
   prodbuild:
     name: "Validate Bundle in Prod"
     runs-on: ubuntu-latest
-    environment: qa
+    environment: dev
     steps:
       # Check out this repo, so that this workflow can access it.
       - uses: actions/checkout@v3
