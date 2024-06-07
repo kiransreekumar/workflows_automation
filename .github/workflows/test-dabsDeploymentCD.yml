@@ -65,10 +65,11 @@ jobs:
           ARM_TENANT_ID: ${{ vars.TENANT_ID }}
           ARM_CLIENT_ID: ${{ vars.CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-          
+
       - run: databricks fs cp ${{ github.workspace }}/dist/*.whl dbfs:/Volumes/test/wheel/wheel_volume --overwrite
         name: "Copy whl to volumes"
         env:
+          DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
           ARM_TENANT_ID: ${{ vars.TENANT_ID }}
           ARM_CLIENT_ID: ${{ vars.CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
