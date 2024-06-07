@@ -80,6 +80,8 @@ targets:
       dbt_schema: dbt
     workspace:
       root_path: /Shared/.bundle/prod/${bundle.name}
+    run_as:
+      service_principal_name: "ecae35c7_edf7_445a_9b2d_959abc721d1f"
     resources:
       jobs:
         dbt_dss_job:
