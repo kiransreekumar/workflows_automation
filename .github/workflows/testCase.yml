@@ -47,5 +47,7 @@ jobs:
       - run: DATABRICKS_CLUSTER_ID=${{ vars.TEST_CLUSTER_ID }} pytest src/tests
         working-directory: .
         env:
-          DATABRICKS_TOKEN: ${{ secrets.SP_TOKEN }}
           DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
+          ARM_TENANT_ID: ${{ vars.TENANT_ID }}
+          ARM_CLIENT_ID: ${{ vars.CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
