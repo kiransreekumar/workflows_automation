@@ -67,7 +67,7 @@ jobs:
         run: terraform plan -lock=false
         working-directory: terraform/environments/test/
       - name: terraform apply
-        run: terraform apply -auto-approve
+        run: terraform apply -auto-approve -lock=false
         working-directory: terraform/environments/test/
 
 
@@ -121,7 +121,7 @@ jobs:
         run: terraform plan -lock=false
         working-directory: terraform/environments/prod/
       - name: terraform apply
-        run: terraform apply -auto-approve
+        run: terraform apply -auto-approve -lock=false
         working-directory: terraform/environments/prod/
 
 
