@@ -55,6 +55,7 @@ jobs:
           CONTAINER_NAME: ${{ vars.CONTAINER_NAME }}
           DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
           ARM_SUBSCRIPTION_ID: ${{ vars.SUBSCRIPTION_ID }}
+          ARM_ACCESS_KEY: ${{ secrets.ARM_ACCESS_KEY }}
 
 
 
