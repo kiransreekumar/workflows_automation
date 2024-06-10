@@ -1,0 +1,70 @@
+
+# This workflow validates, deploys, and runs the specified Terraform pipeline
+# within a pre-production target named "qa".
+name: "Terraform Continuous Integration"
+
+# Ensure that only a single job or workflow using the same concurrency group
+# runs at a time.
+concurrency: 1
+
+# Trigger this workflow whenever a pull request is opened against the repo's
+# main branch or an existing pull request's head branch is updated.
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+    branches:
+      - main
+
+jobs:
+  # Used by the "pipeline_update" job to deploy the bundle.
+  # Bundle validation is automatically performed as part of this deployment.
+  # If validation fails, this workflow fails.
+  stagingbuild:
+    name: "Terraform plan in test"
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      # Check out this repo, so that this workflow can access it.
+      - uses: actions/checkout@v3
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11' # install the python version needed
+
+      # Download the Databricks CLI.
+      # See https://github.com/databricks/setup-cli
+      - uses: databricks/setup-cli@main
+
+      - run: pip3 install wheel
+        name: "Install Wheel file"
+
+      - run:  python3 setup.py bdist_wheel
+        name: "Build Wheel file"
+
+      # Copy the wheel file to Volumes
+      # in the bundle's settings file.
+      - run: databricks fs cp $(Build.Repository.LocalPath)/dist/*.whl dbfs:/Volumes/test/wheel_tf/wheel_volume --overwrite
+        env:
+          DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
+          ARM_TENANT_ID: ${{ vars.TENANT_ID }}
+          ARM_CLIENT_ID: ${{ vars.CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+
+
+    # Validate terrafrom code to be deployed to the test workspace
+
+      - name: terraform init
+        run: terraform init -backend-config="storage_account_name=$STORAGE_ACCOUNT" -backend-config="container_name=$CONTAINER_NAME" -backend-config="resource_group_name=$RESOURCE_GROUP" -backend-config="key=test.terraform.tfstate"
+        working-directory: terraform/environments/test/
+
+      - name: terraform plan
+        run: terraform plan -backend-config="storage_account_name=$STORAGE_ACCOUNT" -backend-config="container_name=$CONTAINER_NAME" -backend-config="resource_group_name=$RESOURCE_GROUP" -backend-config="key=test.terraform.tfstate"
+        working-directory: terraform/environments/test/
+
+
+
+
+
+
