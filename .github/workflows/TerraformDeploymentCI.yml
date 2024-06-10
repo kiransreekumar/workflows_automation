@@ -25,6 +25,16 @@ jobs:
     name: "Terraform plan in test"
     runs-on: ubuntu-latest
     environment: dev
+    env:
+      ARM_CLIENT_ID: ${{ vars.CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+      ARM_TENANT_ID: ${{ vars.TENANT_ID }}
+      RESOURCE_GROUP: ${{ vars.RESOURCE_GROUP }}
+      STORAGE_ACCOUNT: ${{ vars.STORAGE_ACCOUNT }}
+      CONTAINER_NAME: ${{ vars.CONTAINER_NAME }}
+      DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
+      ARM_SUBSCRIPTION_ID: ${{ vars.SUBSCRIPTION_ID }}
+      ARM_ACCESS_KEY: ${{ secrets.ARM_ACCESS_KEY }}
     steps:
       # Check out this repo, so that this workflow can access it.
       - uses: actions/checkout@v3
@@ -46,16 +56,6 @@ jobs:
       - name: terraform init
         run: terraform init -backend-config="storage_account_name=$STORAGE_ACCOUNT" -backend-config="container_name=$CONTAINER_NAME" -backend-config="resource_group_name=$RESOURCE_GROUP" -backend-config="key=testtf.terraform.tfstate"
         working-directory: terraform/environments/test/
-        env:
-          ARM_CLIENT_ID: ${{ vars.CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-          ARM_TENANT_ID: ${{ vars.TENANT_ID }}
-          RESOURCE_GROUP: ${{ vars.RESOURCE_GROUP }}
-          STORAGE_ACCOUNT: ${{ vars.STORAGE_ACCOUNT }}
-          CONTAINER_NAME: ${{ vars.CONTAINER_NAME }}
-          DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
-          ARM_SUBSCRIPTION_ID: ${{ vars.SUBSCRIPTION_ID }}
-          ARM_ACCESS_KEY: ${{ secrets.ARM_ACCESS_KEY }}
 
       - name: terraform fmt
         run: terraform fmt
