@@ -22,7 +22,7 @@ jobs:
   # If validation fails, this workflow fails.
   stagingbuild:
     if: github.ref == 'refs/heads/main'
-    name: "Terraform plan in Test"
+    name: "Terraform deploy in Test"
     runs-on: ubuntu-latest
     environment: dev
     env:
@@ -64,10 +64,10 @@ jobs:
         run: terraform validate
         working-directory: terraform/environments/test/
       - name: terraform plan
-        run: terraform plan
+        run: terraform plan -lock=false
         working-directory: terraform/environments/test/
       - name: terraform apply
-        run: terraform apply
+        run: terraform apply -auto-approve
         working-directory: terraform/environments/test/
 
 
@@ -76,7 +76,7 @@ jobs:
 
   prodbuild:
     if: github.ref == 'refs/heads/release'
-    name: "Terraform plan in Prod"
+    name: "Terraform deploy in Prod"
     runs-on: ubuntu-latest
     environment: dev
     env:
@@ -118,10 +118,10 @@ jobs:
         run: terraform validate
         working-directory: terraform/environments/prod/
       - name: terraform plan
-        run: terraform plan
+        run: terraform plan -lock=false
         working-directory: terraform/environments/prod/
       - name: terraform apply
-        run: terraform apply
+        run: terraform apply -auto-approve
         working-directory: terraform/environments/prod/
 
 
