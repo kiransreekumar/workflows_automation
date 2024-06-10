@@ -37,21 +37,6 @@ jobs:
       # See https://github.com/databricks/setup-cli
       - uses: databricks/setup-cli@main
 
-      - run: pip3 install wheel
-        name: "Install Wheel file"
-
-      - run:  python3 setup.py bdist_wheel
-        name: "Build Wheel file"
-
-      # Copy the wheel file to Volumes
-      # in the bundle's settings file.
-      - run: databricks fs cp $(Build.Repository.LocalPath)/dist/*.whl dbfs:/Volumes/test/wheel_tf/wheel_volume --overwrite
-        env:
-          DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
-          ARM_TENANT_ID: ${{ vars.TENANT_ID }}
-          ARM_CLIENT_ID: ${{ vars.CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-
 
     # Validate terrafrom code to be deployed to the test workspace
 
