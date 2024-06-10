@@ -57,20 +57,15 @@ jobs:
           ARM_SUBSCRIPTION_ID: ${{ vars.SUBSCRIPTION_ID }}
           ARM_ACCESS_KEY: ${{ secrets.ARM_ACCESS_KEY }}
 
-      - name: terraform plan
-        run: terraform plan -backend-config="storage_account_name=$STORAGE_ACCOUNT" -backend-config="container_name=$CONTAINER_NAME" -backend-config="resource_group_name=$RESOURCE_GROUP" -backend-config="key=testtf.terraform.tfstate"
+      - name: terraform fmt
+        run: terraform fmt
         working-directory: terraform/environments/test/
-        env:
-          ARM_CLIENT_ID: ${{ vars.CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-          ARM_TENANT_ID: ${{ vars.TENANT_ID }}
-          RESOURCE_GROUP: ${{ vars.RESOURCE_GROUP }}
-          STORAGE_ACCOUNT: ${{ vars.STORAGE_ACCOUNT }}
-          CONTAINER_NAME: ${{ vars.CONTAINER_NAME }}
-          DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
-          ARM_SUBSCRIPTION_ID: ${{ vars.SUBSCRIPTION_ID }}
-          ARM_ACCESS_KEY: ${{ secrets.ARM_ACCESS_KEY }}
-
+      - name: terraform validate
+        run: terraform validate
+        working-directory: terraform/environments/test/
+      - name: terraform plan
+        run: terraform plan
+        working-directory: terraform/environments/test/
 
 
 
