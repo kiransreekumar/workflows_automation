@@ -16,6 +16,15 @@ on:
       - synchronize
     branches:
       - main
+env:
+  ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
+  ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+  ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
+  ARM_SUBSCRIPTION_ID: ${{ vars.ARM_SUBSCRIPTION_ID }}
+  RESOURCE_GROUP: ${{ vars.RESOURCE_GROUP }}
+  STORAGE_ACCOUNT: ${{ vars.STORAGE_ACCOUNT }}
+  CONTAINER_NAME: ${{ vars.CONTAINER_NAME }}
+  DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
 
 jobs:
   # Used by the "pipeline_update" job to deploy the bundle.
@@ -43,6 +52,7 @@ jobs:
       - name: terraform init
         run: terraform init -backend-config="storage_account_name=$STORAGE_ACCOUNT" -backend-config="container_name=$CONTAINER_NAME" -backend-config="resource_group_name=$RESOURCE_GROUP" -backend-config="key=test.terraform.tfstate"
         working-directory: terraform/environments/test/
+
 
       - name: terraform plan
         run: terraform plan -backend-config="storage_account_name=$STORAGE_ACCOUNT" -backend-config="container_name=$CONTAINER_NAME" -backend-config="resource_group_name=$RESOURCE_GROUP" -backend-config="key=test.terraform.tfstate"
