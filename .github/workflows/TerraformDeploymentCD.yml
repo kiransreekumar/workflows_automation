@@ -64,7 +64,7 @@ jobs:
         run: terraform validate
         working-directory: terraform/environments/test/
       - name: terraform plan
-        run: terraform plan
+        run: terraform plan -lock=false
         working-directory: terraform/environments/test/
       - name: terraform apply
         run: terraform apply -auto-approve
@@ -118,7 +118,7 @@ jobs:
         run: terraform validate
         working-directory: terraform/environments/prod/
       - name: terraform plan
-        run: terraform plan
+        run: terraform plan -lock=false
         working-directory: terraform/environments/prod/
       - name: terraform apply
         run: terraform apply -auto-approve
