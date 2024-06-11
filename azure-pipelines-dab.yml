@@ -17,8 +17,8 @@ stages:
     and(
       not(eq(variables['Build.Reason'], 'IndividualCI')),
       eq(variables['Build.Reason'], 'PullRequest'),
-      eq(variables['System.PullRequest.TargetBranch'], 'refs/heads/main'),
-      not(eq(variables['System.PullRequest.TargetBranch'], 'refs/heads/release'))
+      eq(variables['System.PullRequest.TargetBranch'], 'main'),
+      not(eq(variables['System.PullRequest.TargetBranch'], 'release'))
     )
 
 
