@@ -1,5 +1,5 @@
 
-# Workflows Atomation and CI/CD integration 
+# Databricks Workflows Atomation and CI/CD integration 
 
 How to automate Databricks workflow deployments and integrate with your CI/CD pipeline.
 
@@ -22,12 +22,15 @@ The job definition part under dab_resources folder has examples of deploying dif
         - Delta Live Table pipeline
         - DBT pipeline
         - Wheel file dependency from Unity Catalog Volumes
+        - MLOPS Write feature table job
+        - MLOPS Model training job
+        - MLOPS Batch inference job
  
 
 ([Terraform](https://registry.terraform.io/providers/databricks/databricks/latest/docs))
 
 
-The terraform code under terraform/modules/workflows has examples of deploying the above jobs using Terraform scripts. 
+The terraform code under terraform/modules/ has examples of deploying the above jobs using Terraform scripts. 
 
 PyDabs (Private Preview)
 
@@ -35,7 +38,7 @@ The pydabs code under src/jobs are used to generate the corresponding YML file t
 
 ## CI/CD integration 
 
-The repo has examples fo integrating with different CI/CD platforms 
+The repo has examples of integrating with different CI/CD platforms 
 
 
 Azure Devops
@@ -49,16 +52,37 @@ There are three pipelines defined for Azure Devops integration
 
 Github Actions
 
-There are two pipelines defined for Github Actions integration
+There are five pipelines defined for Github Actions integration
 
-   - Deploying a Databricks Asset bundles based workflows to databricks -  .github/workflows/dabs_qa.yml
-   - Deploying a Terraform based workflows to databricks -  .github/workflows/tf_qa.yml
+   - Deploying a Databricks Asset bundles based workflows to Databricks  CI -  .github/workflows/dabsDeploymentCI.yml
+   - Deploying a Databricks Asset bundles based workflows to Databricks  CD -  .github/workflows/dabsDeploymentCD.yml
+   - Deploying a Terraform based workflows to Databricks CI -   .github/workflows/TerraformDeploymentCI.yml
+   - Deploying a Terraform based workflows to Databricks CD -   .github/workflows/TerraformDeploymentCD.yml
+   - Running Unit test case using pytest -   .github/workflows/testCase.yml
 
+   The workflow will be as shown below.
+
+
+ 
+## Running test cases
+
+The repo has examples of running pytests and integrating the same in a ci/cd workflow 
+
+Test cases under src/tests are run againts a predefined cluster in a databricks workspace using Databricks Connect
+
+Running pytes test cases using [Databricks Connect](https://docs.databricks.com/en/dev-tools/databricks-connect/index.html).
+
+
+The pipeline is deployed using the below wokflows.
+
+
+![Git hub Actions workflow](images/GithubActions.png)
+
+![Git hub Actions CI](images/CI.png)
+![Git hub Actions CD Test](images/CDtest.png)
+![Git hub Actions CD Prod](images/CDprod.png)
 
 
 [Local Environment set up ](localSetup.md)
-
-
-
 
 [Azure Devops Deployment](Azuredevops.md)
